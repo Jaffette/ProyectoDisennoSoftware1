@@ -4,12 +4,10 @@ import { OptionsComponent } from './components/options/options.component';
 
 const APP_ROUTES: Routes = [
   {
-     path: 'home',
-    component: DecisionComponent
+     path: 'home',component: DecisionComponent
   },
   {
-    path: 'options',
-    component: OptionsComponent
+    path: 'options/:game',component: OptionsComponent
   },
  
   {

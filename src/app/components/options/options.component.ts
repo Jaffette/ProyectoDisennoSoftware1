@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import { Options } from '../../interfaces/options.interface';
+import { ActivatedRoute } from '@angular/router'
+import { OptionsService } from '../../services/options.service';
+
 
 
 @Component({
@@ -17,9 +19,23 @@ export class OptionsComponent implements OnInit {
     level:"",
   }
 
-  constructor() { }
+  game:string;
+  constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService ) 
+  {
+    this.activatedRoute.params.subscribe(params => {
+      this.game= params['game']});
+      this.option.game = this.game;
+   }
+  
 
   ngOnInit() {
+  }
+//Function to store the type of game in the dataset
+  optionsSelected()
+  {
+    
+    this._optionService.insertGame(this.option);
+    console.log(this.option);
   }
 
 }

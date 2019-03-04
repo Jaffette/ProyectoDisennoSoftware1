@@ -14,8 +14,11 @@ import { DecisionComponent } from './components/decision/decision.component';
 import { CreateGameComponent } from './components/create-game/create-game.component';
 import { JoinGameComponent } from './components/join-game/join-game.component';
 import { AgainstMachineComponent } from './components/against-machine/against-machine.component';
+import { OptionsComponent } from './components/options/options.component';
+
 
 //Services
+import { OptionsService } from './services/options.service';
 
 
 
@@ -28,6 +31,7 @@ import { AgainstMachineComponent } from './components/against-machine/against-ma
     CreateGameComponent,
     JoinGameComponent,
     AgainstMachineComponent,
+    OptionsComponent
   ],
   imports: [
     BrowserModule,
@@ -36,6 +40,7 @@ import { AgainstMachineComponent } from './components/against-machine/against-ma
     HttpClientModule
   ],
   providers: [
+    OptionsService
   ],
   bootstrap: [AppComponent]
 })

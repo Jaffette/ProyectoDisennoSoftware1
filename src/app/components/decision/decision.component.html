@@ -1,7 +1,7 @@
 <body class="body">
 
     <!-- Here starts the navar code-->
-    <nav class=" navbar navbar-expand-lg navbar-dark bg-dark nav-fill">
+    <nav class="navbar navbar-dark bg-dark">
 
         <a class="navbar-brand font-weight-bold " href="# ">WELCOME</a>
         <button class="navbar-toggler " type="button " data-toggle="collapse " data-target="#navbarSupportedContent " aria-controls="navbarSupportedContent " aria-expanded="false " aria-label="Toggle navigation ">
@@ -21,13 +21,13 @@
     </nav>
 
     <!-- Here starts the cards code-->
-
-    <div class="card-columns">
+    <br><br>
+    <div class="card-columns col-md-12 col-lg-12 col-md-offset-8">
 
         <div class="card">
             <img class="card-img-top" src="../../assets/memory.png" alt="Card image cap">
             <div class="card-block" router>
-                <button type="button" class=" btn btn-dark btn-block" [routerLink]="['/options']">
+                <button type="button" class=" btn btn-dark btn-block" [routerLink]="['/options/:memory']">
                     Play Memory
                 </button>
             </div>
@@ -36,7 +36,7 @@
         <div class="card">
             <img class="card-img-top" src="../../assets/othello.png" alt="Card image cap">
             <div class="card-block">
-                <button type="button" class=" btn btn-dark btn-block" [routerLink]="['/options']">
+                <button type="button" class=" btn btn-dark btn-block" [routerLink]="['/options/:othello']">
                         Play Othello
                 </button>
             </div>

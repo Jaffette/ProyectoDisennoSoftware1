@@ -1,5 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
+body {
+    background: #007bff;
+    background: linear-gradient(to right, #0062e6, #33aeff)
+}
+
 .main-container {
     margin-top: 20px;
 }

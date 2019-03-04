@@ -1,21 +1,20 @@
 <body>
-    <br>
     <h3 class="title animated fadeIn fast">
         CHOOSE YOUR GAME PREFERENCES</h3>
     <hr>
-
+    <br>
     <div class="container animated fadeIn">
-        <form (ngSubmit)="create()" #form="ngform">
+        <form (ngSubmit)="optionsSelected()">
             <div class="form-group">
                 <label class="font-weight-bold">Modality: </label>
-                <select class="form-control" name="" required> 
+                <select class="form-control" [(ngModel)]="option.modality" name="modality" required> 
                   <option value="CreateSession">Create Session</option>
                   <option value="JoinSession">Join Session</option>
                   <option value="PlayerVsBot">Player vs Machine</option>
                 </select>
                 <br>
                 <label class="font-weight-bold">Difficulty: </label>
-                <select class="form-control" name="" required> 
+                <select class="form-control" [(ngModel)]="option.level" name="level" required> 
                   <option value="LevelOne">Level 1</option>
                   <option value="LevelTwo">Level 2</option>
                   <option value="LevelThree">Level 3</option>
