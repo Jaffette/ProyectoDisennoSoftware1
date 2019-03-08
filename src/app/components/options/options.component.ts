@@ -19,6 +19,23 @@ export class OptionsComponent implements OnInit {
     level:"",
   }
 
+  modalityLevelGameVerification(game:string, modality:string, level:string)
+  {
+    let direccion:string="";
+    
+    if(modality=='PlayerVsBot')
+    {
+      direccion= '/againstmachine/:modality/level/game'
+    }
+    else if (modality)
+    {
+      direccion= '/createGame/:modality/level'
+    }
+    console.log(direccion);
+    return direccion;
+    
+  }
+
   game:string;
   constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService ) 
   {

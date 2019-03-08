@@ -1,33 +1,34 @@
-<body>
-    <h3 class="title animated fadeIn fast">
-        CHOOSE YOUR GAME PREFERENCES</h3>
-    <hr>
-    <br>
-    <div class="container animated fadeIn">
-        <form (ngSubmit)="optionsSelected()">
-            <div class="form-group">
-                <label class="font-weight-bold">Modality: </label>
-                <select class="form-control" [(ngModel)]="option.modality" name="modality" required> 
+<h3 class="title animated fadeIn fast">
+    CHOOSE YOUR GAME PREFERENCES
+</h3>
+<hr class="line">
+<br>
+<div class="container animated fadeIn">
+    <form (ngSubmit)="optionsSelected()">
+        <div class="form-group">
+            <label class="font-weight-bold">Modality: </label>
+            <select class="form-control" [(ngModel)]="option.modality" name="modality" required> 
                   <option value="CreateSession">Create Session</option>
                   <option value="JoinSession">Join Session</option>
                   <option value="PlayerVsBot">Player vs Machine</option>
                 </select>
-                <br>
-                <label class="font-weight-bold">Difficulty: </label>
-                <select class="form-control" [(ngModel)]="option.level" name="level" required> 
+            <br>
+            <label class="font-weight-bold">Difficulty: </label>
+            <select class="form-control" [(ngModel)]="option.level" name="level" required> 
                   <option value="LevelOne">Level 1</option>
                   <option value="LevelTwo">Level 2</option>
                   <option value="LevelThree">Level 3</option>
                 </select>
-                <br>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-dark">GO -></button>
-                </div>
+            <br>
+            <div class="form-group">
+                <button type="submit" class="btn btn-dark btn-lg" [routerLink]="['option']">GO -></button>
             </div>
+        </div>
 
-        </form>
-    </div>
-    <br><br>
-    <a class="back font-italic" [routerLink]="['/home']"> Go Back ...</a>
+    </form>
+</div>
+<br><br>
 
-</body>
+<div id="mybutton">
+    <button class="btn btn-danger btn-group-justified font-italic" [routerLink]="['/home']"> Go Back ...</button>
+</div>

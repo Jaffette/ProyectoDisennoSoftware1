@@ -19,6 +19,7 @@ import { OptionsComponent } from './components/options/options.component';
 
 //Services
 import { OptionsService } from './services/options.service';
+import { StatisticsComponent } from './components/statistics/statistics.component';
 
 
 
@@ -31,7 +32,8 @@ import { OptionsService } from './services/options.service';
     CreateGameComponent,
     JoinGameComponent,
     AgainstMachineComponent,
-    OptionsComponent
+    OptionsComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,

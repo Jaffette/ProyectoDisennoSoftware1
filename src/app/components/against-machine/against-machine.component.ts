@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'app-against-machine',
@@ -7,7 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AgainstMachineComponent implements OnInit {
 
-  constructor() { }
+  nombre:string="memoria";
+  dashBoard:any[]=[];
+
+  constructor( private activatedRoute: ActivatedRoute ) 
+  {
+
+  }
 
   ngOnInit() {
   }

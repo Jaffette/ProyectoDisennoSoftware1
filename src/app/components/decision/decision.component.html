@@ -1,47 +1,44 @@
-<body class="body">
+<!-- Here starts the navar code-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-    <!-- Here starts the navar code-->
-    <nav class="navbar navbar-dark bg-dark">
+    <a class="navbar-brand font-weight-bold " href="# ">WELCOME</a>
 
-        <a class="navbar-brand font-weight-bold " href="# ">WELCOME</a>
-        <button class="navbar-toggler " type="button " data-toggle="collapse " data-target="#navbarSupportedContent " aria-controls="navbarSupportedContent " aria-expanded="false " aria-label="Toggle navigation ">
+    <button class="navbar-toggler " type="button " data-toggle="collapse " data-target="#navbarSupportedContent " aria-controls="navbarSupportedContent " aria-expanded="false " aria-label="Toggle navigation ">
             <span class="navbar-toggler-icon "></span>
         </button>
 
-        <div class="collapse navbar-collapse " id="navbarSupportedContent ">
-            <ul class="navbar-nav mr-auto ">
-                <li class="nav-item " routerLinkActive="active">
-                    <a class="nav-link" [routerLink]="['/create']">PLAYER STATS <span class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-            <button class="btn btn btn-danger my-2 my-sm-0 font-weight-bold " type="submit ">LOG OUT</button>
-
-        </div>
-
-    </nav>
-
-    <!-- Here starts the cards code-->
-    <br><br>
-    <div class="card-columns col-md-12 col-lg-12 col-md-offset-8">
-
-        <div class="card">
-            <img class="card-img-top" src="../../assets/memory.png" alt="Card image cap">
-            <div class="card-block" router>
-                <button type="button" class=" btn btn-dark btn-block" [routerLink]="['/options/:memory']">
-                    Play Memory
-                </button>
-            </div>
-        </div>
-
-        <div class="card">
-            <img class="card-img-top" src="../../assets/othello.png" alt="Card image cap">
-            <div class="card-block">
-                <button type="button" class=" btn btn-dark btn-block" [routerLink]="['/options/:othello']">
-                        Play Othello
-                </button>
-            </div>
-        </div>
+    <div class="collapse navbar-collapse " id="navbarSupportedContent ">
+        <ul class="navbar-nav mr-auto ">
+            <li class="nav-item " routerLinkActive="active">
+                <a class="nav-link" [routerLink]="['/stats']">PLAYER STATS <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <button class="btn btn btn-danger my-2 my-sm-0 font-weight-bold " type="submit ">LOG OUT</button>
 
     </div>
 
-</body>
+</nav>
+
+<!-- Here starts the cards code-->
+<br><br>
+<div class="card-columns col-md-12 col-lg-12 col-md-offset-8" id="cards">
+
+    <div class=" card ">
+        <img class="card-img-top " src="../../assets/memory.png " alt="Card image cap ">
+        <div class="card-block " router>
+            <button type="button " class=" btn btn-dark btn-block " [routerLink]="[ '/options/:memory'] ">
+                    Play Memory
+                </button>
+        </div>
+    </div>
+
+    <div class="card ">
+        <img class="card-img-top " src="../../assets/othello.png " alt="Card image cap ">
+        <div class="card-block ">
+            <button type="button " class=" btn btn-dark btn-block " [routerLink]="[ '/options/:othello'] ">
+                        Play Othello
+                </button>
+        </div>
+    </div>
+
+</div>

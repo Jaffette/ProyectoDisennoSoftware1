@@ -1,11 +1,11 @@
-HOLAAA
-<!--<div class="table-responsive">
-    <table class="table" cellpadding=1 cellspacing=1>
-        <tr class="row" *ngFor="let fila of ESPERANDOVARAIBLE; let i = index">
-            <td class="col" *ngFor="let columna of fila; let j = index">
-                 <button  type="button" class="button btn-outline-primary btn-dark">Mostrar</button> 
-                <img (click)="" src="" width="50" height="50">
-            </td>
-            <tr>
+<h3 class="font-weight-bold">{{nombre}}</h3>
+<div class="container">
+
+    <table class="table-responsive" cellpadding=1 cellspacing=1>
+        <tr class="row" *ngFor="let row of dashBoard;">
+            <td class="col" *ngFor="let col of row;">0</td>
+        </tr>
+
     </table>
-</div>-->
+
+</div>

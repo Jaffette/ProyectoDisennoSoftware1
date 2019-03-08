@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DecisionComponent implements OnInit {
 
+
   active:boolean=true;
 
   constructor() { }
