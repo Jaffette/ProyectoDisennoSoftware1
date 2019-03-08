@@ -1,0 +1,28 @@
+h1 {
+    color: #D4AC0D;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+}
+
+h2 {
+    color: #D4AC0D;
+    margin-left: 35%;
+    padding-bottom: 3%;
+    font-weight: bold;
+}
+
+#stats {
+    left: auto;
+    right: auto;
+}
+
+.container {
+    margin-top: 5%;
+}
+
+#mybutton {
+    position: fixed;
+    bottom: 1%;
+    left: 2%;
+}
