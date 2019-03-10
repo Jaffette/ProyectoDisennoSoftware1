@@ -3,18 +3,15 @@ import { UserService } from '../../services/user.service';
 
 
 @Component({
-  selector: 'app-decision',
-  templateUrl: 'decision.component.html',
-  styleUrls: ['decision.component.css']
+  selector: 'app-log-in',
+  templateUrl: './log-in.component.html',
+  styleUrls: ['./log-in.component.css']
 })
-export class DecisionComponent implements OnInit {
-
-
-  active = true;
-
+export class LogInComponent implements OnInit {
   constructor(public user: UserService) { }
 
   ngOnInit() {
   }
 
 }
+

@@ -13,7 +13,7 @@
                 <a class="nav-link" [routerLink]="['/stats']">PLAYER STATS <span class="sr-only">(current)</span></a>
             </li>
         </ul>
-        <button class="btn btn btn-danger my-2 my-sm-0 font-weight-bold " type="submit ">LOG OUT</button>
+        <button class="btn btn btn-danger my-2 my-sm-0 font-weight-bold " (click) = "user.logout()" type="submit ">LOG OUT</button>
 
     </div>
 
