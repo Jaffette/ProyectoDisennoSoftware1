@@ -10,7 +10,7 @@ import { UserService } from '../../services/user.service';
 export class DecisionComponent implements OnInit {
 
 
-  active:boolean=true;
+  active = true;
 
   constructor(public user: UserService) { }
 
