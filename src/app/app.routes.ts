@@ -30,7 +30,7 @@ const APP_ROUTES: Routes = [
   },
  
   {
-      path:'**',pathMatch:'full',redirectTo:'home'
+      path:'**',pathMatch:'full',redirectTo:'login'
   }
 
 ];
