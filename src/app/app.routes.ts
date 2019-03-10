@@ -19,7 +19,7 @@ const APP_ROUTES: Routes = [
     component: StatisticsComponent
   },
   {
-    path: 'againstmachine',
+    path: 'againstmachine/:level/:game',
     component: AgainstMachineComponent
   },
  

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Options } from '../../interfaces/options.interface';
 import { ActivatedRoute } from '@angular/router'
 import { OptionsService } from '../../services/options.service';
+import { stringify } from '@angular/core/src/render3/util';
 
 
 
@@ -17,25 +18,23 @@ export class OptionsComponent implements OnInit {
     game:"",
     modality:"",
     level:"",
-  }
+  };
 
-  modalityLevelGameVerification(game:string, modality:string, level:string)
+ 
+  optionsSelected()
   {
-    let direccion:string="";
     
-    if(modality=='PlayerVsBot')
-    {
-      direccion= '/againstmachine/:modality/level/game'
-    }
-    else if (modality)
-    {
-      direccion= '/createGame/:modality/level'
-    }
-    console.log(direccion);
-    return direccion;
-    
+    this._optionService.insertGame(this.option);
+    console.log(this.option);
   }
 
+ print()
+  {
+    console.log(this.option.modality);
+  }
+
+
+  
   game:string;
   constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService ) 
   {
@@ -43,16 +42,10 @@ export class OptionsComponent implements OnInit {
       this.game= params['game']});
       this.option.game = this.game;
    }
-  
 
   ngOnInit() {
   }
 //Function to store the type of game in the dataset
-  optionsSelected()
-  {
-    
-    this._optionService.insertGame(this.option);
-    console.log(this.option);
-  }
+
 
 }

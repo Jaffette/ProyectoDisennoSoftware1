@@ -8,15 +8,19 @@ import { ActivatedRoute } from '@angular/router'
 })
 export class AgainstMachineComponent implements OnInit {
 
-  nombre:string="memoria";
-  dashBoard:any[]=[];
+  nombre:string="";
+  dashBoard:any[]=[[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 
   constructor( private activatedRoute: ActivatedRoute ) 
   {
-
-  }
+    this.activatedRoute.params.subscribe(params => {
+      this.nombre= params['game']});
+      
+   }
+ 
 
   ngOnInit() {
+    console.log(this.nombre);
   }
 
 }
