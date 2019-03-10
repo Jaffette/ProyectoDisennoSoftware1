@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 //Routes
 
@@ -15,15 +16,11 @@ import { CreateGameComponent } from './components/create-game/create-game.compon
 import { JoinGameComponent } from './components/join-game/join-game.component';
 import { AgainstMachineComponent } from './components/against-machine/against-machine.component';
 import { OptionsComponent } from './components/options/options.component';
-
+import { LogInComponent } from './components/log-in/log-in.component';
 
 //Services
 import { OptionsService } from './services/options.service';
 import { StatisticsComponent } from './components/statistics/statistics.component';
-
-
-
-
 
 @NgModule({
   declarations: [
@@ -33,10 +30,20 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
     JoinGameComponent,
     AgainstMachineComponent,
     OptionsComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    LogInComponent
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp({
+      apiKey: 'AIzaSyBDaS5cB9zDX3HaTaLtt1kefObGwe3Tomc',
+    authDomain: 'design-project-e4d21.firebaseapp.com',
+    databaseURL: 'https://design-project-e4d21.firebaseio.com',
+    projectId: 'design-project-e4d21',
+    storageBucket: 'design-project-e4d21.appspot.com',
+    messagingSenderId: '386401663778',
+    }),
+    AngularFireAuthModule,
     FormsModule,
     APP_ROUTING,
     HttpClientModule
