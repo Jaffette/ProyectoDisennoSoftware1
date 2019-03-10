@@ -1,6 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-//Components
+// Components
 import { DecisionComponent } from './components/decision/decision.component';
 import { OptionsComponent } from './components/options/options.component';
 import { AgainstMachineComponent } from './components/against-machine/against-machine.component';
@@ -21,16 +21,16 @@ const APP_ROUTES: Routes = [
     component: OptionsComponent
   },
   {
-    path:'stats',
+    path: 'stats',
     component: StatisticsComponent
   },
   {
     path: 'againstmachine',
     component: AgainstMachineComponent
   },
- 
+
   {
-      path:'**',pathMatch:'full',redirectTo:'login'
+      path: '**', pathMatch: 'full', redirectTo: 'login'
   }
 
 ];
@@ -39,5 +39,6 @@ const APP_ROUTES: Routes = [
   exports: [RouterModule]
 })
 
+// tslint:disable-next-line: class-name
 export class APP_ROUTING { }
-//export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, {useHash:true});
+// export const APP_ROUTING = RouterModule.forRoot(APP_ROUTES, {useHash:true});
