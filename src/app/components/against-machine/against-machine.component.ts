@@ -8,19 +8,45 @@ import { ActivatedRoute } from '@angular/router'
 })
 export class AgainstMachineComponent implements OnInit {
 
-  nombre:string="";
-  dashBoard:any[]=[[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+  name:string="";
+  
+  dashBoard:any[];
 
   constructor( private activatedRoute: ActivatedRoute ) 
   {
     this.activatedRoute.params.subscribe(params => {
-      this.nombre= params['game']});
+      this.name= params['game'];
+    if(params['level']=='LevelOne')
+    {
+      this.dashBoard=[[0,0,0,0],
+                      [0,0,0,0],
+                      [0,0,0,0]]
+    }
+    else if (params['level']=='LevelTwo')
+    {
+      this.dashBoard=[[0,0,0,0,0,0],
+                      [0,0,0,0,0,0],
+                      [0,0,0,0,0,0],
+                      [0,0,0,0,0,0],
+                      [0,0,0,0,0,0]]
+    }
+    else{
+      this.dashBoard=[[0,0,0,0,0,0,0,0],
+                      [0,0,0,0,0,0,0,0],
+                      [0,0,0,0,0,0,0,0],
+                      [0,0,0,0,0,0,0,0],
+                      [0,0,0,0,0,0,0,0],
+                      [0,0,0,0,0,0,0,0],
+                      [0,0,0,0,0,0,0,0],
+                      [0,0,0,0,0,0,0,0]]
+    }
+  });
       
    }
  
 
   ngOnInit() {
-    console.log(this.nombre);
+    
   }
 
 }
