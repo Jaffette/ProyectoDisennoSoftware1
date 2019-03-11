@@ -7,14 +7,15 @@ import { ActivatedRoute } from '@angular/router'
   styleUrls: ['./against-machine.component.css']
 })
 export class AgainstMachineComponent implements OnInit {
-
-  name:string="";
   
   dashBoard:any[];
+  name:string="";
+
 
   constructor( private activatedRoute: ActivatedRoute ) 
   {
     this.activatedRoute.params.subscribe(params => {
+
       this.name= params['game'];
     if(params['level']=='LevelOne')
     {
@@ -46,7 +47,7 @@ export class AgainstMachineComponent implements OnInit {
  
 
   ngOnInit() {
-    
+
   }
 
 }
