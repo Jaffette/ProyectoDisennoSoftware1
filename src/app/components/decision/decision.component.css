@@ -1,4 +1,16 @@
-#cards {
-    position: fixed;
-    left: 15%;
-}
+    h5 {
+        color: white;
+        font-weight: bold;
+    }
+    
+    .card-columns {
+        margin-left: 15%;
+        margin-right: 15%;
+    }
+    
+    @media(max-width:500px) {
+        .card-columns {
+            margin-left: 0%;
+            margin-right: 0%;
+        }
+    }
