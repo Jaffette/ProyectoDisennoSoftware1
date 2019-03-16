@@ -21,6 +21,8 @@ import { LogInComponent } from './components/log-in/log-in.component';
 import { OptionsService } from './services/options.service';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +49,7 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
     HttpClientModule
   ],
   providers: [
-    OptionsService
+    OptionsService,
   ],
   bootstrap: [AppComponent]
 })

@@ -1,9 +1,12 @@
 <!-- Here starts the navar code-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-    <a class="navbar-brand font-weight-bold" href="# ">
-        <h5>WELCOME</h5>
-    </a>
+
+    <h5>WELCOME</h5>
+    <div class="collapse navbar-collapse">
+
+    </div>
+
     <a class="navbar-btn " href="#" routerLinkActive="active" [routerLink]="['/stats']">
         <h5>STATS</h5>
     </a>
@@ -11,13 +14,16 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent ">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item navbar ">
-                <a class="nav-link navbar-brand"><span class="sr-only">(current)</span></a>
+
+                <a id="user"> <img id="profile" src="{{profilePicture}}" class="profile-image img-circle"> {{name | uppercase}}</a>
             </li>
 
         </ul>
 
 
     </div>
+
+
     <button class="btn btn btn-danger navbar-brand my-2 my-sm-0 font-weight-bold " (click)="user.logout()" type="submit ">LOG OUT</button>
 
 </nav>

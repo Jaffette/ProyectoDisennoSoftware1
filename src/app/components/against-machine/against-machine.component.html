@@ -1,11 +1,13 @@
 <h3 class="font-weight-bold">{{name}}</h3>
 <div class="container">
-
     <table class="table-responsive" cellpadding=1 cellspacing=1>
-        <tr class="row" *ngFor="let row of dashBoard;">
-            <td class="col" *ngFor="let col of row;">0</td>
+        <!--Falta aagregar un ngif para esperar al servicio-->
+        <tr class="row" *ngFor="let row of dashBoard; let i = index">
+            <td class="col" *ngFor="let col of row; let j = index">
+                <img class="image1" src="../../../assets/logoBox.png">
+                <img class="image2" src="">
+            </td>
         </tr>
 
     </table>
-
 </div>

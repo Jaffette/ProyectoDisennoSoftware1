@@ -20,10 +20,11 @@ export class OptionsService {
        'Content-Type':'application/json'
     });
 
-   /* return this.http.post( this.fireBaseURL, body, {headers} )
+  /* return this.http.post( this.fireBaseURL, body, {headers} )
     map( res=>{ 
       console.log(res.json())
-      return res.json()});*/
+      return res.json()});
 
+  }*/
   }
 }
