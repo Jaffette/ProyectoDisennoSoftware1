@@ -24,7 +24,7 @@ export class UserService {
   constructor(private afAuth: AngularFireAuth, public router: Router, public ngZone: NgZone) { }
   login() {
     this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
-    .then((result) =>
+    .then((result) => 
     this.ngZone.run(() => {
     this.router.navigate(['home']);
     }));
