@@ -18,11 +18,10 @@ export class OptionsComponent implements OnInit {
     modality:"",
     level:"",
   }
-
+  
   modalityLevelGameVerification(game:string, modality:string, level:string)
   {
     let direccion:string="";
-    
     if(modality=='PlayerVsBot')
     {
       direccion= '/againstmachine/:modality/level/game'
@@ -33,7 +32,6 @@ export class OptionsComponent implements OnInit {
     }
     console.log(direccion);
     return direccion;
-    
   }
 
   game:string;
@@ -50,9 +48,8 @@ export class OptionsComponent implements OnInit {
 //Function to store the type of game in the dataset
   optionsSelected()
   {
-    
-    this._optionService.insertGame(this.option);
     console.log(this.option);
+    this._optionService.writeUserData(this.option.game,this.option.modality,this.option.level);
   }
 
 }
