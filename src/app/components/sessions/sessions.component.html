@@ -1,0 +1,17 @@
+<h3 id="title" class="font-weight-bold">SESSIONS AVAILABLE</h3>
+<br>
+<br>
+<div class="container">
+    <table id="table" class="table-responsive" cellpadding=1 cellspacing=1>
+        <tr class="row" *ngFor="let row of sessions; let i = index">
+            <td>
+                <h2 id="sessionTitle">{{row}}</h2>
+            </td>
+            <td>
+                <button type="buton" class="btn btn-warning">JOIN +</button>
+
+            </td>
+        </tr>
+    </table>
+
+</div>

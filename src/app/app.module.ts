@@ -16,10 +16,12 @@ import { CreateGameComponent } from './components/create-game/create-game.compon
 import { AgainstMachineComponent } from './components/against-machine/against-machine.component';
 import { OptionsComponent } from './components/options/options.component';
 import { LogInComponent } from './components/log-in/log-in.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
 
 //Services
 import { OptionsService } from './services/options.service';
-import { StatisticsComponent } from './components/statistics/statistics.component';
+import { MemoryService } from './services/memory.service';
+import { SessionsComponent } from './components/sessions/sessions.component';
 
 
 
@@ -31,7 +33,8 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
     AgainstMachineComponent,
     OptionsComponent,
     StatisticsComponent,
-    LogInComponent
+    LogInComponent,
+    SessionsComponent
   ],
   imports: [
     BrowserModule,
@@ -50,6 +53,7 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
   ],
   providers: [
     OptionsService,
+    MemoryService
   ],
   bootstrap: [AppComponent]
 })

@@ -5,6 +5,7 @@ import { auth } from 'firebase';
 import { of as observableOf } from 'rxjs';
 import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import { map } from 'rxjs/operators';
+import { mapChildrenIntoArray } from '@angular/router/src/url_tree';
 
 
 @Injectable({
@@ -28,8 +29,6 @@ export class UserService {
     this.ngZone.run(() => {
     this.router.navigate(['home']);
     }));
-    // this.afAuth.auth.signInWithPopup(new auth.FacebookAuthProvider());
-
 
   }
   logout() {
@@ -54,6 +53,15 @@ export class UserService {
       return user.photoURL;
     }
     
+  }
+
+  showMail()
+  {
+    var mail = auth().currentUser;
+    if(mail)
+    {
+      return mail.email;
+    }
   }
   
 

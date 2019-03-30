@@ -6,6 +6,8 @@ import { OptionsComponent } from './components/options/options.component';
 import { AgainstMachineComponent } from './components/against-machine/against-machine.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { LogInComponent } from '../app/components/log-in/log-in.component';
+import { CreateGameComponent } from './components/create-game/create-game.component';
+import { SessionsComponent } from './components/sessions/sessions.component';
 
 const APP_ROUTES: Routes = [
   {
@@ -17,7 +19,7 @@ const APP_ROUTES: Routes = [
      component: DecisionComponent
   },
   {
-    path: 'options/:game',
+    path: 'options/:game/:email',
     component: OptionsComponent
   },
   {
@@ -27,6 +29,14 @@ const APP_ROUTES: Routes = [
   {
     path: 'againstmachine/:level/:game',
     component: AgainstMachineComponent
+  },
+  {
+    path: 'createSession/:level/:game',
+    component : CreateGameComponent
+  },
+  {
+    path: 'joinSession/:level/:game',
+    component: SessionsComponent
   },
 
   {

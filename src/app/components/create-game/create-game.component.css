@@ -1,0 +1,15 @@
+.loading {
+    margin-left: 35%;
+    margin-top: 15%;
+}
+
+#title {
+    font-weight: bold;
+    color: white;
+    font-size: 70px;
+}
+
+#loadingpic {
+    widht: 60px;
+    height: 60px;
+}

@@ -7,7 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreateGameComponent implements OnInit {
 
-  constructor() { }
+  public loading : boolean;
+
+  constructor() {
+    this.loading = true;
+   }
 
   ngOnInit() {
   }

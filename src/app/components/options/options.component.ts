@@ -2,9 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Options } from '../../interfaces/options.interface';
 import { ActivatedRoute } from '@angular/router'
 import { OptionsService } from '../../services/options.service';
-import { stringify } from '@angular/core/src/render3/util';
-
-
 
 @Component({
   selector: 'app-options',
@@ -18,8 +15,30 @@ export class OptionsComponent implements OnInit {
     game:"",
     modality:"",
     level:"",
-  }
+    playerOne:"",
+    playerTwo:"",
+    turnPlayerOne:true,
+    turnPlayerTwo:false
+  };
   
+  
+  game:string;
+  email:string;
+
+  constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService ) 
+  {
+    this.activatedRoute.params.subscribe(params => {
+      this.game= params['game'];
+      this.email= params['email'];
+    });
+      this.option.playerOne = this.email;
+      this.option.game = this.game;
+      console.log(this.email);
+   }
+
+  ngOnInit() {
+  }
+
   modalityLevelGameVerification(game:string, modality:string, level:string)
   {
     let direccion:string="";
@@ -35,28 +54,15 @@ export class OptionsComponent implements OnInit {
     return direccion;
   }
 
- print()
-  {
-    console.log(this.option.modality);
-  }
 
 
-  
-  game:string;
-  constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService ) 
-  {
-    this.activatedRoute.params.subscribe(params => {
-      this.game= params['game']});
-      this.option.game = this.game;
-   }
-
-  ngOnInit() {
-  }
 //Function to store the type of game in the dataset
   optionsSelected()
   {
     console.log(this.option);
-    this._optionService.writeUserData(this.option.game,this.option.modality,this.option.level);
-  }
+    this._optionService.writeUserData(this.option);
+   }
+
+  
 
 }

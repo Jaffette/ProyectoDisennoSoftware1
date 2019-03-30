@@ -4,14 +4,20 @@ h3 {
     margin-left: 5%
 }
 
+#mybutton {
+    position: fixed;
+    bottom: 1%;
+    left: 2%;
+}
+
 .image1 {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
 }
 
 .container {
-    margin-left: 35%;
-    margin-top: 10%
+    margin-left: 15%;
+    margin-top: 5%
 }
 
 @media(max-width:500px) {
