@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OptionsService } from '../../services/options.service';
+import { UserService } from '../../services/user.service';
+
 
 
 @Component({
@@ -9,8 +11,10 @@ import { OptionsService } from '../../services/options.service';
 })
 export class SessionsComponent implements OnInit {
 
-  sessions;
-  constructor(private _optionService:OptionsService) {
+  sessions:any=[];
+  currentUser;
+  constructor(private _optionService:OptionsService, private user:UserService) {
+    
     this.showSessions();
    }
 
@@ -22,6 +26,13 @@ export class SessionsComponent implements OnInit {
   async showSessions(){
     this.sessions = await this._optionService.readSessionsAvailable(); 
     console.log('Los valores de sessions son: ',this.sessions)
+  }
+
+
+  showIndex(index){
+    console.log('indice: ',index);
+    console.log('clave para ese indice: ',this.sessions[index]);
+    this._optionService.changeSessionStatus(this.sessions[index],this.user.showMail());
   }
 
 

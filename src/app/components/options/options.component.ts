@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Options } from '../../interfaces/options.interface';
 import { ActivatedRoute } from '@angular/router'
 import { OptionsService } from '../../services/options.service';
+import { Key } from 'protractor';
 
 @Component({
   selector: 'app-options',
@@ -18,12 +19,16 @@ export class OptionsComponent implements OnInit {
     playerOne:"",
     playerTwo:"",
     turnPlayerOne:true,
-    turnPlayerTwo:false
+    turnPlayerTwo:false,
+    ptsPlayerOne:0,
+    ptsPlayerTwo:0,
+    winner:'empty'
   };
   
   
   game:string;
   email:string;
+  key:string;
 
   constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService ) 
   {
@@ -59,8 +64,8 @@ export class OptionsComponent implements OnInit {
 //Function to store the type of game in the dataset
   optionsSelected()
   {
-    console.log(this.option);
-    this._optionService.writeUserData(this.option);
+    this.key=this._optionService.writeUserData(this.option);
+    console.log('La llave es: ',this.key)
    }
 
   

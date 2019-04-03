@@ -13,10 +13,13 @@ export class OptionsService {
 
    writeUserData(object:Options) 
    {
-  console.log(object.modality);
+    var myRef = firebase.database().ref('games/').push();
+    var key = myRef.key;
+    var newData;
      if(object.modality == '/createSession/')
      {
-      firebase.database().ref('games/').push({
+     
+        newData = {
         identifier : object.playerOne.substr(1,object.playerOne.length-1),
         playerOne: object.playerOne.substr(1,object.playerOne.length-1),
         turnPlayerOne: object.turnPlayerOne,
@@ -25,11 +28,12 @@ export class OptionsService {
         gameType: object.game,
         modality: object.modality.substr(1,object.modality.length-2),
         level : object.level.substr(0,object.level.length-1)
-      });
+      }
+
      }
      else if (object.modality == '/againstmachine/')
      {
-      firebase.database().ref('games/').push({
+        newData={
         identifier : object.playerOne.substr(1,object.playerOne.length-1),
         playerOne: object.playerOne.substr(1,object.playerOne.length-1),
         turnPlayerOne:'',
@@ -38,14 +42,17 @@ export class OptionsService {
         gameType: object.game,
         modality: object.modality.substr(1,object.modality.length-2),
         level : object.level.substr(0,object.level.length-1)
-      });
+        }
+
      }
+     myRef.set(newData);
+     newData=null;
+     return key;
 
   }
 
   readSessionsAvailable () 
   {
-    console.log("In the function");
     var result = [];
     var ref = firebase.database().ref();
     return new Promise (function (resolve){
@@ -64,5 +71,13 @@ export class OptionsService {
       } );
     
     }
-  
+
+    changeSessionStatus(key:string,user){
+     
+      console.log('Current User: ',user);
+      var updateRef = firebase.database().ref('games/');
+      updateRef.child(key).update({"playerTwo":user});
+     }
+
+      
 }

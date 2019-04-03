@@ -6,5 +6,8 @@ export interface Options{
     playerTwo:string;
     turnPlayerOne:boolean;
     turnPlayerTwo:boolean;
+    ptsPlayerOne:number;
+    ptsPlayerTwo:number;
+    winner:string;
     key$?:string;
 }

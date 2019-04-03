@@ -8,6 +8,8 @@ import { StatisticsComponent } from './components/statistics/statistics.componen
 import { LogInComponent } from '../app/components/log-in/log-in.component';
 import { CreateGameComponent } from './components/create-game/create-game.component';
 import { SessionsComponent } from './components/sessions/sessions.component';
+import { GameScreenComponent } from './components/game-screen/game-screen.component';
+
 
 const APP_ROUTES: Routes = [
   {
@@ -27,16 +29,20 @@ const APP_ROUTES: Routes = [
     component: StatisticsComponent
   },
   {
-    path: 'againstmachine/:level/:game',
+    path: 'againstmachine/:level/:game:/key',
     component: AgainstMachineComponent
   },
   {
-    path: 'createSession/:level/:game',
+    path: 'createSession/:level/:game:/key',
     component : CreateGameComponent
   },
   {
-    path: 'joinSession/:level/:game',
+    path: 'joinSession/:level/:game:/key',
     component: SessionsComponent
+  },
+  {
+    path:'game-screen/:key',
+    component:GameScreenComponent
   },
 
   {
