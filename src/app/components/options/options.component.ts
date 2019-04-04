@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Options } from '../../interfaces/options.interface';
 import { ActivatedRoute } from '@angular/router'
 import { OptionsService } from '../../services/options.service';
-import { Key } from 'protractor';
+
 
 @Component({
   selector: 'app-options',
@@ -22,13 +22,14 @@ export class OptionsComponent implements OnInit {
     turnPlayerTwo:false,
     ptsPlayerOne:0,
     ptsPlayerTwo:0,
+    key:"",
     winner:'empty'
   };
   
   
   game:string;
   email:string;
-  key:string;
+  key:string="abc";
 
   constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService ) 
   {
@@ -44,27 +45,13 @@ export class OptionsComponent implements OnInit {
   ngOnInit() {
   }
 
-  modalityLevelGameVerification(game:string, modality:string, level:string)
-  {
-    let direccion:string="";
-    if(modality=='PlayerVsBot')
-    {
-      direccion= '/againstmachine/:modality/level/game'
-    }
-    else if (modality)
-    {
-      direccion= '/createGame/:modality/level'
-    }
-    console.log(direccion);
-    return direccion;
-  }
 
 
 
 //Function to store the type of game in the dataset
   optionsSelected()
   {
-    this.key=this._optionService.writeUserData(this.option);
+    this.option.key=this._optionService.writeUserData(this.option);
     console.log('La llave es: ',this.key)
    }
 

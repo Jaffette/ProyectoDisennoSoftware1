@@ -9,5 +9,6 @@ export interface Options{
     ptsPlayerOne:number;
     ptsPlayerTwo:number;
     winner:string;
+    key:string;
     key$?:string;
 }
