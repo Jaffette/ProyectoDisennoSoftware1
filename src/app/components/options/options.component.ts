@@ -29,7 +29,6 @@ export class OptionsComponent implements OnInit {
   
   game:string;
   email:string;
-  key:string="abc";
 
   constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService ) 
   {
@@ -49,10 +48,10 @@ export class OptionsComponent implements OnInit {
 
 
 //Function to store the type of game in the dataset
-  optionsSelected()
+  async optionsSelected()
   {
-    this.option.key=this._optionService.writeUserData(this.option);
-    console.log('La llave es: ',this.key)
+    this.option.key= await this._optionService.writeUserData(this.option);
+    console.log('La llave es: ',this.option.key)
    }
 
   
