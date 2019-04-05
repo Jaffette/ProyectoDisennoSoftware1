@@ -73,7 +73,6 @@ export class OptionsService {
     }
 
     changeSessionStatus(key:string,user){
-     
       console.log('Current User: ',user);
       var updateRef = firebase.database().ref('games/');
       updateRef.child(key).update({"playerTwo":user});

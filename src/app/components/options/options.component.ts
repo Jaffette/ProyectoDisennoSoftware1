@@ -22,7 +22,6 @@ export class OptionsComponent implements OnInit {
     turnPlayerTwo:false,
     ptsPlayerOne:0,
     ptsPlayerTwo:0,
-    key:"",
     winner:'empty'
   };
   
@@ -33,7 +32,7 @@ export class OptionsComponent implements OnInit {
   constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService ) 
   {
     this.activatedRoute.params.subscribe(params => {
-      this.game= params['game'];
+      this.game= params['game']+'/';
       this.email= params['email'];
     });
       this.option.playerOne = this.email;
@@ -43,17 +42,5 @@ export class OptionsComponent implements OnInit {
 
   ngOnInit() {
   }
-
-
-
-
-//Function to store the type of game in the dataset
-  async optionsSelected()
-  {
-    this.option.key= await this._optionService.writeUserData(this.option);
-    console.log('La llave es: ',this.option.key)
-   }
-
-  
 
 }
