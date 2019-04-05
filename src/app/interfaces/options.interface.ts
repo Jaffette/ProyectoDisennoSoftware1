@@ -4,8 +4,7 @@ export interface Options{
     level:string;
     playerOne:string;
     playerTwo:string;
-    turnPlayerOne:boolean;
-    turnPlayerTwo:boolean;
+    currentPlayer:string;
     ptsPlayerOne:number;
     ptsPlayerTwo:number;
     winner:string;

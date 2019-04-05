@@ -22,9 +22,7 @@ export class OptionsService {
         newData = {
         identifier : object.playerOne.substr(1,object.playerOne.length-1),
         playerOne: object.playerOne.substr(1,object.playerOne.length-1),
-        turnPlayerOne: object.turnPlayerOne,
         playerTwo : 'empty',
-        turnPlayerTwo : object.turnPlayerTwo,
         gameType: object.game,
         modality: object.modality.substr(1,object.modality.length-2),
         level : object.level.substr(0,object.level.length-1)

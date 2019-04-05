@@ -1,9 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+
 
 //Routes
 
@@ -23,7 +24,7 @@ import { OptionsService } from './services/options.service';
 import { MemoryService } from './services/memory.service';
 import { SessionsComponent } from './components/sessions/sessions.component';
 import { GameScreenComponent } from './components/game-screen/game-screen.component';
-
+import { RestService } from './services/rest.service';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { GameScreenComponent } from './components/game-screen/game-screen.compon
     StatisticsComponent,
     LogInComponent,
     SessionsComponent,
-    GameScreenComponent
+    GameScreenComponent,
+    //
   ],
   imports: [
     BrowserModule,
@@ -55,7 +57,8 @@ import { GameScreenComponent } from './components/game-screen/game-screen.compon
   ],
   providers: [
     OptionsService,
-    MemoryService
+    MemoryService,
+    RestService
   ],
   bootstrap: [AppComponent]
 })
