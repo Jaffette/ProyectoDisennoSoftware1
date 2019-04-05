@@ -1,4 +1,25 @@
-<div class="loading" *ngIf="loading">
+<div>
+    <img src="../../../assets/avatar.png" class="avatar">
+    <br>
+    <h2 class="h2">{{grafica.playerOne}}</h2>
+    <h2 class="h2">Points: {{grafica.ptsPlayerOne}}</h2>
+</div>
+<br>
+<div class="container">
+    <table class="table-responsive" cellpadding=1 cellspacing=1>
 
-    <h1 id="title" class="animated fadeIn "> <img src="../../../assets/loader.gif" id=loadingpic> Waiting for a Player ...</h1>
+        <tr class="row" *ngFor="let row of tablero; let i = index">
+            <td class="col" *ngFor="let col of row; let j = index">
+                <img (click)="positions(i,j);" class="image1" [src]="col">
+            </td>
+        </tr>
+
+    </table>
+</div>
+<br>
+<div>
+    <img src="../../../assets/avatar.png" class="avatar2">
+    <br>
+    <h2 class="h2">{{grafica.plyerTwo}}</h2>
+    <h2 class="h2">Points: {{grafica.ptsPlayerTwo}}</h2>
 </div>

@@ -29,15 +29,15 @@ const APP_ROUTES: Routes = [
     component: StatisticsComponent
   },
   {
-    path: 'againstmachine/:level/:game/:key',
+    path: 'againstmachine/:level/:game',
     component: AgainstMachineComponent
   },
   {
-    path: 'createSession/:level/:game/:key',
+    path: 'createSession/:level/:game',
     component : CreateGameComponent
   },
   {
-    path: 'joinSession/:level/:game/:key',
+    path: 'joinSession/:level/:game',
     component: SessionsComponent
   },
   {
