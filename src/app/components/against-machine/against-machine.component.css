@@ -1,3 +1,56 @@
 h3 {
     color: white;
+    margin-top: 1%;
+    margin-left: 5%
+}
+
+#mybutton {
+    position: fixed;
+    bottom: 1%;
+    left: 2%;
+}
+
+.image1 {
+    width: 70px;
+    height: 70px;
+}
+
+.container {
+    margin-left: 15%;
+    margin-top: 5%
+}
+
+@media(max-width:500px) {
+    h3 {
+        color: white;
+        margin-top: 2%;
+        margin-left: 5%
+    }
+    .image1 {
+        width: 50px;
+        height: 50px;
+    }
+    .container {
+        margin-left: 5%;
+        margin-top: 40%;
+    }
+}
+
+@media(max-width:350px) {
+    .container {
+        margin-left: 5%;
+        margin-right: 0%;
+    }
+    h3 {
+        color: white;
+        margin-top: 2%;
+        margin-left: 5%;
+    }
+    .col {
+        padding-left: 3px;
+    }
+    .image1 {
+        width: 25px;
+        height: 25px;
+    }
 }

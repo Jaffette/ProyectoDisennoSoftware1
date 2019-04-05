@@ -4,12 +4,12 @@
 <hr class="line">
 <br>
 <div class="container animated fadeIn">
-    <form (ngSubmit)="optionsSelected()">
+    <form>
         <div class="form-group">
             <label class="font-weight-bold">Modality: </label>
             <select class="form-control" [(ngModel)]="option.modality" name="modality" required> 
-                  <option value="CreateSession">Create Session</option>
-                  <option value="JoinSession">Join Session</option>
+                  <option value="/createSession/">Create Session</option>
+                  <option value="/joinSession/">Join Session</option>
                   <option value="/againstmachine/">Player vs Machine</option>
                 </select>
             <br>

@@ -3,10 +3,9 @@ import {Router, RouterLink} from '@angular/router';
 import { auth } from 'firebase';
 
 import { of as observableOf } from 'rxjs';
-import { AngularFireAuth } from 'angularfire2/auth';
-
+import { AngularFireAuth, AngularFireAuthModule } from 'angularfire2/auth';
 import { map } from 'rxjs/operators';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
+import { mapChildrenIntoArray } from '@angular/router/src/url_tree';
 
 
 @Injectable({
@@ -26,12 +25,10 @@ export class UserService {
   constructor(private afAuth: AngularFireAuth, public router: Router, public ngZone: NgZone) { }
   login() {
     this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
-    .then((result) =>
+    .then((result) => 
     this.ngZone.run(() => {
     this.router.navigate(['home']);
     }));
-    // this.afAuth.auth.signInWithPopup(new auth.FacebookAuthProvider());
-
 
   }
   logout() {
@@ -41,4 +38,32 @@ export class UserService {
     this.router.navigate(['login']);
     }));
   }
+
+  showName(){
+    var user = auth().currentUser;
+    if (user){
+      return user.displayName;
+    }
+    
+  }
+
+  showProfilePicture(){
+    var user = auth().currentUser;
+    if (user){
+      return user.photoURL;
+    }
+    
+  }
+
+  showMail()
+  {
+    var mail = auth().currentUser;
+    if(mail)
+    {
+      return mail.email;
+    }
+  }
+  
+
+
 }

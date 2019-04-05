@@ -9,10 +9,16 @@ import { UserService } from '../../services/user.service';
 })
 export class DecisionComponent implements OnInit {
 
-
+  name:string;
+  profilePicture:any;
+  email:String;
   active = true;
 
-  constructor(public user: UserService) { }
+  constructor(public user: UserService) { 
+    this.name=user.showName();
+    this.profilePicture=user.showProfilePicture();
+    this.email=user.showMail();
+  }
 
   ngOnInit() {
   }

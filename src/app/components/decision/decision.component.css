@@ -8,6 +8,16 @@
         margin-right: 15%;
     }
     
+    #profile {
+        border-radius: 50%;
+        width: 70px;
+    }
+    
+    #user {
+        font-weight: bold;
+        color: white;
+    }
+    
     @media(max-width:500px) {
         .card-columns {
             margin-left: 0%;
