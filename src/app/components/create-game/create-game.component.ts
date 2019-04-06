@@ -37,7 +37,7 @@ export class CreateGameComponent implements OnInit {
   graphicBoard1;
   graphicBoard2;
   //Variable que guarda cuando los 2 jugadores ya estan 
-  validation=null;
+  validation;
   constructor(private _restService: RestService, private _object: PassObject ) {
     this.loading = false;
     this.object = _object.getObject();
@@ -48,43 +48,38 @@ export class CreateGameComponent implements OnInit {
     
   }
 
-  async cambioEstado(){
-    console.log('Cambio de Estado')
+
+   cambioEstado(){
+     console.log("En cambio estado");
     var json = {token:this.objectGame.key}
-    await this._restService.confirmSecondPlayer(json).subscribe(
+     this._restService.confirmSecondPlayer(json).subscribe(
       data =>
       {
-        console.log("Lo que llega de la consulta",data);
-          this.validation = data;
-         
-         
+          console.log("Lo que llega de la consulta",data);
+          this.validation = data;   
       },
       err => 
       {
         console.log("Error occured.")
-       
       }
     );
-    
-  console.log('salgo de la función');
   }
 
-    async paint(){
+      paint(){
 
-      while(true){
-        console.log('Me cago en Marvin mjmmm');
-        await this.cambioEstado();
-        if(this.validation != null){
-          console.log("Cancelo el if");
+         this.cambioEstado();
+        if(typeof this.validation != "undefined")
+        {
           this.loading = true;
-          break
         }
-      }
+        else{
+          setTimeout(()=>{this.cambioEstado();}, 450);
+        }
       
    }
  
    
-   createSession(){
+    createSession(){
     this._restService.createSession(this.object).subscribe(
       data =>{ 
         this.tablero=data['graphicBoardReal'];

@@ -41,7 +41,7 @@ export class RestService {
   {
     let body = JSON.stringify(object);
     console.log('Body del servicio',body);
-    return this.http.post(this.endpoint+'sessionComplete',body,httpOptions);
+    return this.http.post(this.endpoint+'sessionComplete',body,httpOptions).toPromise();
   }
 }
 
