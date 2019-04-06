@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RestService } from '../../services/rest.service';
 import { PassObject } from '../../services/object.service';
 import { Options } from '../../interfaces/options.interface';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-create-game',
@@ -37,7 +38,7 @@ export class CreateGameComponent implements OnInit {
   graphicBoard1;
   graphicBoard2;
   //Variable que guarda cuando los 2 jugadores ya estan 
-  validation=null;
+  validation = "failed";
   constructor(private _restService: RestService, private _object: PassObject ) {
     this.loading = false;
     this.object = _object.getObject();
@@ -50,40 +51,52 @@ export class CreateGameComponent implements OnInit {
 
   async cambioEstado(){
     console.log('Cambio de Estado')
-    var json = {token:this.objectGame.key}
-    await this._restService.confirmSecondPlayer(json).subscribe(
+    var json = {token:this.objectGame.key};
+    
+    const promise = await this._restService.confirmSecondPlayer(json).then(
       data =>
       {
         console.log("Lo que llega de la consulta",data);
-          this.validation = data;
-         
-         
+        return data['state'];
       },
       err => 
       {
         console.log("Error occured.")
-       
+        return null
       }
     );
-    
-  console.log('salgo de la función');
+    console.log(promise);
+    return promise;
+    console.log('salgo de la función');
   }
+  async paint(){
+    while(this.validation == "failed"){
+      this.validation = await this.cambioEstado();
 
-    async paint(){
-
-      while(true){
-        console.log('Me cago en Marvin mjmmm');
-        await this.cambioEstado();
-        if(this.validation != null){
-          console.log("Cancelo el if");
-          this.loading = true;
-          break
-        }
-      }
+    }
+    this.loading = true;    
+        
       
+  }
+   /*
+    paint(){
+      var i = 0;
+      while(i < 5){
+        console.log('Me cago en Marvin mjmmm');
+        this.cambioEstado();
+          console.log("validation",this.validation);
+          if(this.validation == "ready"){
+            console.log("Cancelo el if");
+            this.loading = true;
+            break
+          }
+        
+        i += 1;
+      }
    }
+  */
  
-   
+
    createSession(){
     this._restService.createSession(this.object).subscribe(
       data =>{ 
