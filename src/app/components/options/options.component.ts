@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Options } from '../../interfaces/options.interface';
 import { ActivatedRoute } from '@angular/router'
 import { OptionsService } from '../../services/options.service';
+import { objectPass } from '../../services/object.service';
 
 
 @Component({
@@ -29,10 +30,10 @@ export class OptionsComponent implements OnInit {
   game:string;
   email:string;
 
-  constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService ) 
+  constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService, private _object:objectPass ) 
   {
     this.activatedRoute.params.subscribe(params => {
-      this.game= params['game']+'/';
+      this.game= params['game'];
       this.email= params['email'];
     });
       this.option.playerOne = this.email;
@@ -43,4 +44,9 @@ export class OptionsComponent implements OnInit {
   ngOnInit() {
   }
 
+  sendObject()
+  {
+    console.log("Enviando Objeto...");
+    this._object.setObject(this.option);
+  }
 }

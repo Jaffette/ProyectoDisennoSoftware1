@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Options } from '../../interfaces/options.interface';
+import { objectPass } from '../../services/object.service';
 
 @Component({
   selector: 'app-create-game',
@@ -19,6 +20,8 @@ export class CreateGameComponent implements OnInit {
 
   //recibe el tablero que proviene del API;
   public tablero;
+  //Objeto para enviar al API
+  object:Options;
   public grafica = 
   {
     gameType:"memory",
@@ -65,14 +68,17 @@ export class CreateGameComponent implements OnInit {
       ptsPlayerOne:0,
       ptsPlayerTwo:0
     };
+  
 
-  constructor() {
+  constructor( private _object:objectPass) {
     this.loading = true;
- 
+    this.object=_object.getObject();
    }
 
   ngOnInit() {
     this.paint();
+    
+    console.log(this.object.game,this.object.level,this.object.modality,this.object.playerOne,this.object.playerTwo);
   }
 
 
