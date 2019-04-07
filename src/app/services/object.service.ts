@@ -7,10 +7,16 @@ export class PassObject
     objectBackUp:Options;
     var1;
     var2;
+    tokenParaJoin;
 
     setObject(objectReceived:Options)
     {
         this.objectBackUp = objectReceived;
+    }
+
+    setToken(t){
+        this.tokenParaJoin = t;
+        console.log("El valor de respaldo del token en el servicio es: ",this.tokenParaJoin)
     }
     
     setVar1(msg){

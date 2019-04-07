@@ -57,6 +57,13 @@ export class RestService {
     return this.http.post(this.endpoint+'joinSession',body,httpOptions);
   }
 
+  paintBoard(object)
+  {
+    let body = JSON.stringify(object);
+    console.log(body);
+    return this.http.post(this.endpoint+'getSession',body,httpOptions);
+  }
+
 
 
 }

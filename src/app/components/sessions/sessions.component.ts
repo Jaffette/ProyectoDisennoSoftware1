@@ -22,7 +22,8 @@ export class SessionsComponent implements OnInit {
   constructor(private _optionService:OptionsService, private user:UserService, private _optionObject: PassObject, private activatedRoute: ActivatedRoute, private _restService:RestService) {
     this.activatedRoute.params.subscribe(params => {
       this.options.game= params['game'];
-      this.options.level= params['level'];
+      this.options.level= params['level']+'/';
+      console.log('Para la vara de la ruta',this.options)
     });
   this._optionObject.setVar2("join");
    }
@@ -32,7 +33,7 @@ export class SessionsComponent implements OnInit {
   }
 
   showSessions(){
-    var json = {level:this.options.level+'/', game:this.options.game+'/'};
+    var json = {level:this.options.level, game:this.options.game+'/'};
     console.log(json);
     this._restService.getMemorySessions(json).subscribe(
       data =>
@@ -51,14 +52,13 @@ export class SessionsComponent implements OnInit {
 
   joinSessions(i)
   {
-    console.log('EN JOIN SESSION')
+    this._optionObject.setToken(this.sessions[i]['token']);
+    console.log('Token del joinSession',this.sessions[i]['token'] )
     var json = {token:this.sessions[i]['token'], email:this.user.showMail()};
-    console.log(json);
     this._restService.joinSession(json).subscribe(
       data =>
       {
-        console.log(data);
-
+       console.log('data del Servicio en join session',data)
       },
       err => 
       {
