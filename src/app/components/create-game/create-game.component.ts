@@ -47,9 +47,7 @@ export class CreateGameComponent implements OnInit {
       console.log('Valores del objeto',this.object)
       this.createSession();
     }
-    
    }
-
   ngOnInit() {
     
   }
@@ -79,8 +77,7 @@ export class CreateGameComponent implements OnInit {
     while(this.validation == "failed"){
       this.validation = await this.cambioEstado();
     }
-    this.loading = true;    
-         
+    this.loading = true;        
   }
 
  
@@ -153,9 +150,5 @@ export class CreateGameComponent implements OnInit {
         //Disable de Pantalla;
        }
      }
-      
    }
-
-  
-
 }
