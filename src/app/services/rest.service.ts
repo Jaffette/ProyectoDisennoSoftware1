@@ -20,25 +20,28 @@ export class RestService {
     let body = res;
     return body || { };
   }
-/**
- * 	"identifier":"asd",
-	"gameType":"Memory",
-	"level":"levelOne",
-	"modality":"player vs player",
-	"playerOne":"uri.arte08@gmail.com",
-	"playerTwo":"jaffette.solano@gmail.com",
-	"turnPlayerOne":"true",
-    "turnPlayerTwo":"false",
-    "ptsPlay1": 0,
-    "ptsPlay2": 0, 
-    "winner": 0
-*/
+
   getMemory(){
     return this.http.get(this.endpoint,httpOptions);
   }
   createSession(object){
     let body = JSON.stringify(object);
+    console.log(body);
     return this.http.post(this.endpoint+'createSesion',body,httpOptions);
+  }
+  
+  play(object)
+  {
+    let body = JSON.stringify(object);
+    console.log(body);
+    return this.http.post(this.endpoint+'playGame',body,httpOptions);
+  }
+
+  confirmSecondPlayer(object)
+  {
+    let body = JSON.stringify(object);
+    console.log('Body del servicio',body);
+    return this.http.post(this.endpoint+'sessionComplete',body,httpOptions);
   }
 }
 

@@ -54,7 +54,7 @@ export class OptionsService {
     var result = [];
     var ref = firebase.database().ref();
     return new Promise (function (resolve){
-        ref.child('games').orderByChild('playerTwo').equalTo("empty").on("value",function(snapshot){
+        ref.child('games').orderByChild('playerTwo').equalTo("").on("value",function(snapshot){
           console.log(snapshot.val());
           snapshot.forEach(function(data){
             console.log(data.key);

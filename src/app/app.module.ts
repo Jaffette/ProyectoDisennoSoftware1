@@ -18,12 +18,12 @@ import { AgainstMachineComponent } from './components/against-machine/against-ma
 import { OptionsComponent } from './components/options/options.component';
 import { LogInComponent } from './components/log-in/log-in.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
-
+import { SessionsComponent } from './components/sessions/sessions.component';
+import { GameScreenComponent } from './components/game-screen/game-screen.component';
 //Services
 import { OptionsService } from './services/options.service';
 import { MemoryService } from './services/memory.service';
-import { SessionsComponent } from './components/sessions/sessions.component';
-import { GameScreenComponent } from './components/game-screen/game-screen.component';
+import { PassObject } from './services/object.service';
 import { RestService } from './services/rest.service';
 
 
@@ -58,6 +58,7 @@ import { RestService } from './services/rest.service';
   providers: [
     OptionsService,
     MemoryService,
+    PassObject,
     RestService
   ],
   bootstrap: [AppComponent]

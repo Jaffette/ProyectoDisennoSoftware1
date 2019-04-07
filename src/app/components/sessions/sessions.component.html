@@ -8,7 +8,7 @@
                 <h2 id="sessionTitle">{{row}}</h2>
             </td>
             <td>
-                <button id={{i}} (click)="showIndex(i)" type="buton" class="btn btn-warning" [routerLink]="['/game-screen/:key']">JOIN +</button>
+                <button id={{i}} (click)="showIndex(i)" type="buton" class="btn btn-warning" routerLink="/createSession/+{{options.level}}+/+{{options.game}}">JOIN +</button>
             </td>
         </tr>
     </table>

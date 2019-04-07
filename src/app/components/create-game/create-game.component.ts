@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { RestService } from '../../services/rest.service';
+import { PassObject } from '../../services/object.service';
+import { Options } from '../../interfaces/options.interface';
 
 @Component({
   selector: 'app-create-game',
@@ -9,83 +11,97 @@ import { ActivatedRoute } from '@angular/router';
 export class CreateGameComponent implements OnInit {
 
   public loading : boolean;
-  //
+  //La matriz Grafica
+  //Contador para verificar 
   contador:number=0;
   //Posiciones para enviar al API
   posX1:number;
   posY1:number;
   posX2:number;
   posY2:number;
-
+  //Var for the while
+  whileVar=true;
+  //Objeto para trabajar
+  public objectGame = {
+  currentPlayer:"",
+  graphicBoard:[],
+  graphicBoardReal:[],
+  key:"",
+  ptsPlayerOne:0,
+  winner:""};
   //recibe el tablero que proviene del API;
   public tablero;
-  public grafica = 
-  {
-    gameType:"memory",
-    graphicBoard1 : 
-      [
-      ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/216500/1427518228.svg",
-       "https://openclipart.org/download/291098/fishtank-colour.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"],
-      ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"],
-      ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"],
-       ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"]
-      ],
-      graphicBoard2 : 
-      [
-      ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"],
-      ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"],
-      ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"],
-       ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"]
-      ],
-      playerOne:"uri.arte08@gmail.com",
-      plyerTwo:"jaffette.solano@gmail.com",
-      ptsPlayerOne:0,
-      ptsPlayerTwo:0
-    };
-
-  constructor() {
-    this.loading = true;
- 
+  //Backup of the Object
+  object:Options;
+  //Graphicboards
+  graphicBoard1;
+  graphicBoard2;
+  //Variable que guarda cuando los 2 jugadores ya estan 
+  validation=null;
+  constructor(private _restService: RestService, private _object: PassObject ) {
+    this.loading = false;
+    this.object = _object.getObject();
+    this.createSession();
    }
 
   ngOnInit() {
-    this.paint();
+    
   }
 
-
-
-    paint(){
-     console.log('Pintando...');
-    setTimeout(()=>{this.tablero=this.grafica.graphicBoard2;}, 2000);
-    this.tablero =  this.grafica.graphicBoard1;
+  async cambioEstado(){
+    console.log('Cambio de Estado')
+    var json = {token:this.objectGame.key}
+    await this._restService.confirmSecondPlayer(json).subscribe(
+      data =>
+      {
+        console.log("Lo que llega de la consulta",data);
+          this.validation = data;
+         
+         
+      },
+      err => 
+      {
+        console.log("Error occured.")
+       
+      }
+    );
     
-    console.log('despues de 2 segundos');
-    
+  console.log('salgo de la función');
+  }
+
+    async paint(){
+
+      while(true){
+        console.log('Me cago en Marvin mjmmm');
+        await this.cambioEstado();
+        if(this.validation != null){
+          console.log("Cancelo el if");
+          this.loading = true;
+          break
+        }
+      }
+      
    }
+ 
+   
+   createSession(){
+    this._restService.createSession(this.object).subscribe(
+      data =>{ 
+        this.tablero=data['graphicBoardReal'];
+        this.objectGame.currentPlayer = data['currentPlayer'];
+        this.objectGame.graphicBoardReal =  data['graphicBoardReal'];
+        this.objectGame.graphicBoard =  data['graphicBoard'];
+        this.objectGame.key = data['key'];
+        this.objectGame.ptsPlayerOne = data['ptsPlayerOne'];
+        this.objectGame.winner = data['winner'];
+      },
+      err => {
+        console.log("Error occured.")
+      }
+    )
+  };
 
+  //Function that stores in the api the cards selected by the Players
    positions(fila,columna)
    {
      
@@ -104,7 +120,30 @@ export class CreateGameComponent implements OnInit {
         alert("Se insertaron las 4 posiciones");
         console.log("PosX1: "+this.posX1+" PosY1"+this.posY1+" PosX2: "+this.posX2+" PosY2: "+this.posY2);  
         //se pasan al API
-        /*AQUÍ*/
+         var objectMovements = 
+         {
+           token:this.objectGame.key,
+           posX1: this.posX1,
+           posY1: this.posY1,
+           posX2: this.posX2,
+           posY2: this.posY2,
+           currentPlayer: this.objectGame.currentPlayer
+         }
+         this._restService.play(objectMovements).subscribe
+         (
+           data =>
+           {
+             this.objectGame.key = data['token'];
+             this.objectGame.graphicBoardReal = data['graphicBoard']; // esto no queda así devolver ambas matrices 
+             this.objectGame.ptsPlayerOne = data['ptsPlayerOne'];
+             this.objectGame.currentPlayer = data['currentPlayer'];
+            console.log( this.objectGame.currentPlayer)
+           },
+           err =>
+           {
+              console.log("Error while Playing");
+           }
+         );
         //Se setean en 0;
         this.posX1=0;
         this.posY1=0;
