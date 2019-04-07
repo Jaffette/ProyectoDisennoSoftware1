@@ -20,8 +20,6 @@ export class CreateGameComponent implements OnInit {
   posY1:number;
   posX2:number;
   posY2:number;
-  //Var for the while
-  whileVar=true;
   //Objeto para trabajar
   public objectGame = {
   currentPlayer:"",
