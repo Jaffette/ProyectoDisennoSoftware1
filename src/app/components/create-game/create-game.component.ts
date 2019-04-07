@@ -3,6 +3,7 @@ import { RestService } from '../../services/rest.service';
 import { PassObject } from '../../services/object.service';
 import { Options } from '../../interfaces/options.interface';
 
+
 @Component({
   selector: 'app-create-game',
   templateUrl: './create-game.component.html',
@@ -19,8 +20,6 @@ export class CreateGameComponent implements OnInit {
   posY1:number;
   posX2:number;
   posY2:number;
-  //Var for the while
-  whileVar=true;
   //Objeto para trabajar
   public objectGame = {
   currentPlayer:"",
@@ -37,49 +36,56 @@ export class CreateGameComponent implements OnInit {
   graphicBoard1;
   graphicBoard2;
   //Variable que guarda cuando los 2 jugadores ya estan 
-  validation;
+  validation = "failed";
   constructor(private _restService: RestService, private _object: PassObject ) {
     this.loading = false;
     this.object = _object.getObject();
-    this.createSession();
+    if(this._object.var1== "GG"){
+        console.log("Vengo de un join")
+    }else{
+      console.log("Vengo de un createSession");
+      console.log('Valores del objeto',this.object)
+      this.createSession();
+    }
+    
    }
 
   ngOnInit() {
     
   }
 
-
-   cambioEstado(){
-     console.log("En cambio estado");
-    var json = {token:this.objectGame.key}
-     this._restService.confirmSecondPlayer(json).subscribe(
+  async cambioEstado(){
+    console.log('Cambio de Estado')
+    var json = {token:this.objectGame.key};
+    
+    const promise = await this._restService.confirmSecondPlayer(json).then(
       data =>
       {
-          console.log("Lo que llega de la consulta",data);
-          this.validation = data;   
+        console.log("Lo que llega de la consulta",data);
+        return data['state'];
       },
       err => 
       {
         console.log("Error occured.")
+        return null
       }
     );
+    console.log(promise);
+    return promise;
   }
 
-      paint(){
 
-         this.cambioEstado();
-        if(typeof this.validation != "undefined")
-        {
-          this.loading = true;
-        }
-        else{
-          setTimeout(()=>{this.cambioEstado();}, 450);
-        }
-      
-   }
+  async paint(){
+    while(this.validation == "failed"){
+      this.validation = await this.cambioEstado();
+    }
+    this.loading = true;    
+         
+  }
+
  
-   
-    createSession(){
+
+   createSession(){
     this._restService.createSession(this.object).subscribe(
       data =>{ 
         this.tablero=data['graphicBoardReal'];
