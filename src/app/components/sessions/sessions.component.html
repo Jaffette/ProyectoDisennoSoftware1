@@ -13,7 +13,7 @@
                 <br>
             </td>
             <td>
-                <button id={{i}} type="buton" (click)="joinSessions(i)" class="btn btn-warning" routerLink="/createSession/+{{options.level}}+/+{{options.game}}">JOIN +</button>
+                <button id={{i}} type="buton" (click)="joinSessions(i)" class="btn btn-warning" routerLink="/createSession/+{{options.level}}+{{options.game}}">JOIN +</button>
             </td>
         </tr>
     </table>

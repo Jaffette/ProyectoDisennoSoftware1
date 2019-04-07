@@ -11,6 +11,8 @@ import { Options } from '../../interfaces/options.interface';
 })
 export class CreateGameComponent implements OnInit {
 
+
+  token;
   public loading : boolean;
   //La matriz Grafica
   //Contador para verificar 
@@ -20,7 +22,7 @@ export class CreateGameComponent implements OnInit {
   posY1:number;
   posX2:number;
   posY2:number;
-  //Objeto para trabajar
+ //Objeto para trabajar
   public objectGame = {
   currentPlayer:"",
   graphicBoard:[],
@@ -28,26 +30,48 @@ export class CreateGameComponent implements OnInit {
   key:"",
   ptsPlayerOne:0,
   winner:""};
+  //ObjectComplete
+  objectComplete;
+
+  objectToPaint = {
+    token:"",
+    playerOne:"",
+    playerTwo:"",
+    ptsPlayerOne:0,
+    ptsPlayerTwo:0,
+    graphicBoard:[]
+  }
+
+   //Backup of the Object
+   object:Options;
   //recibe el tablero que proviene del API;
   public tablero;
-  //Backup of the Object
-  object:Options;
+ /*
   //Graphicboards
   graphicBoard1;
-  graphicBoard2;
+  graphicBoard2;*/
   //Variable que guarda cuando los 2 jugadores ya estan 
   validation = "failed";
+
   constructor(private _restService: RestService, private _object: PassObject ) {
+
     this.loading = false;
     this.object = _object.getObject();
-    if(this._object.var1== "GG"){
+
+    if(this._object.var1== "GG")
+    {
         console.log("Vengo de un join")
-    }else{
+        this.token = this._object.tokenParaJoin;
+        this.paintFinal();
+        this.loading = true;
+        
+    }
+    else{
       console.log("Vengo de un createSession");
-      console.log('Valores del objeto',this.object)
+      console.log('Valores del objeto',this.object);
       this.createSession();
     }
-    
+   
    }
 
   ngOnInit() {
@@ -79,20 +103,41 @@ export class CreateGameComponent implements OnInit {
     while(this.validation == "failed"){
       this.validation = await this.cambioEstado();
     }
-    this.loading = true;    
+    this.loading = true;   
+    this.paintFinal(); 
          
   }
 
- 
+   paintFinal(){
+    var json={token:this.token};
+    console.log('Valor de mi token para pintar: ',this.token)
+     this._restService.paintBoard(json).subscribe(
+      data =>{ 
+        console.log('Info del Paint: ',data);
+      this.objectToPaint.graphicBoard = data['graphicBoard'];
+      this.tablero=this.objectToPaint.graphicBoard;
+      this.objectToPaint.playerOne =  data['playerOne'];
+      this.objectToPaint.playerTwo =  data['playerTwo'];
+      this.objectToPaint.token = data['token'];
+      this.objectToPaint.ptsPlayerOne = data['ptsPlayerOne'];
+      this.objectToPaint.ptsPlayerTwo = data['ptsPlayerTwo'];
+    },
+    err => {
+      console.log("Error occured.")
+    }
+  )
+   }
+
 
    createSession(){
     this._restService.createSession(this.object).subscribe(
       data =>{ 
-        this.tablero=data['graphicBoardReal'];
+        //this.tablero=data['graphicBoardReal'];
         this.objectGame.currentPlayer = data['currentPlayer'];
         this.objectGame.graphicBoardReal =  data['graphicBoardReal'];
         this.objectGame.graphicBoard =  data['graphicBoard'];
         this.objectGame.key = data['key'];
+        this.token =  this.objectGame.key;
         this.objectGame.ptsPlayerOne = data['ptsPlayerOne'];
         this.objectGame.winner = data['winner'];
       },
@@ -101,6 +146,7 @@ export class CreateGameComponent implements OnInit {
       }
     )
   };
+
 
   //Function that stores in the api the cards selected by the Players
    positions(fila,columna)
@@ -134,10 +180,11 @@ export class CreateGameComponent implements OnInit {
          (
            data =>
            {
-             this.objectGame.key = data['token'];
-             this.objectGame.graphicBoardReal = data['graphicBoard']; // esto no queda así devolver ambas matrices 
-             this.objectGame.ptsPlayerOne = data['ptsPlayerOne'];
-             this.objectGame.currentPlayer = data['currentPlayer'];
+             this.objectToPaint.token = data['token'];
+             this.objectToPaint.graphicBoard = data['graphicBoard']; // esto no queda así devolver ambas matrices 
+             this.objectToPaint.ptsPlayerOne = data['ptsPlayerOne'];
+             this.objectToPaint.ptsPlayerTwo= data['ptsPlayerTwo'];
+             this.tablero = this.objectToPaint.graphicBoard;
             console.log( this.objectGame.currentPlayer)
            },
            err =>
@@ -150,6 +197,7 @@ export class CreateGameComponent implements OnInit {
         this.posY1=0;
         this.posX2=0;
         this.posY2=0;
+        this.contador = 0;
         //Disable de Pantalla;
        }
      }
