@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RestService } from '../../services/rest.service';
 import { PassObject } from '../../services/object.service';
 import { Options } from '../../interfaces/options.interface';
-import { async } from '@angular/core/testing';
+
 
 @Component({
   selector: 'app-create-game',
@@ -40,7 +40,14 @@ export class CreateGameComponent implements OnInit {
   constructor(private _restService: RestService, private _object: PassObject ) {
     this.loading = false;
     this.object = _object.getObject();
-    this.createSession();
+    if(this._object.var1== "GG"){
+        console.log("Vengo de un join")
+    }else{
+      console.log("Vengo de un createSession");
+      console.log('Valores del objeto',this.object)
+      this.createSession();
+    }
+    
    }
 
   ngOnInit() {
@@ -65,34 +72,17 @@ export class CreateGameComponent implements OnInit {
     );
     console.log(promise);
     return promise;
-    console.log('salgo de la función');
   }
+
+
   async paint(){
     while(this.validation == "failed"){
       this.validation = await this.cambioEstado();
-
     }
     this.loading = true;    
-        
-      
+         
   }
-   /*
-    paint(){
-      var i = 0;
-      while(i < 5){
-        console.log('Me cago en Marvin mjmmm');
-        this.cambioEstado();
-          console.log("validation",this.validation);
-          if(this.validation == "ready"){
-            console.log("Cancelo el if");
-            this.loading = true;
-            break
-          }
-        
-        i += 1;
-      }
-   }
-  */
+
  
 
    createSession(){

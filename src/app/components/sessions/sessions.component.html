@@ -5,10 +5,15 @@
     <table id="table" class="table-responsive" cellpadding=1 cellspacing=1>
         <tr class="row" *ngFor="let row of sessions; let i = index">
             <td>
-                <h2 id="sessionTitle">{{row}}</h2>
+                <h4 id="sessionTitle">Key: {{row['token']}} </h4>
+                <br>
             </td>
             <td>
-                <button id={{i}} (click)="showIndex(i)" type="buton" class="btn btn-warning" routerLink="/createSession/+{{options.level}}+/+{{options.game}}">JOIN +</button>
+                <h4 id="sessionTitle">Player: {{row['playerOne']}}</h4>
+                <br>
+            </td>
+            <td>
+                <button id={{i}} type="buton" (click)="joinSessions(i)" class="btn btn-warning" routerLink="/createSession/+{{options.level}}+/+{{options.game}}">JOIN +</button>
             </td>
         </tr>
     </table>

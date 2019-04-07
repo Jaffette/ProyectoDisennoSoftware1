@@ -41,6 +41,7 @@ export class OptionsComponent implements OnInit {
    setObject()
    {
       this._object.setObject(this.option);
+      this._object.setVar1("create");
    }
  
   ngOnInit() {

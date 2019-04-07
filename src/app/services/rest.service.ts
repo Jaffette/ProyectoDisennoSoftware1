@@ -43,5 +43,21 @@ export class RestService {
     console.log('Body del servicio',body);
     return this.http.post(this.endpoint+'sessionComplete',body,httpOptions).toPromise();
   }
+  
+  getMemorySessions(object)
+  {
+    let body = JSON.stringify(object);
+    return this.http.post(this.endpoint+'getMemorySessions',body,httpOptions);
+  }
+
+  joinSession(object)
+  {
+    let body = JSON.stringify(object);
+    console.log(body);
+    return this.http.post(this.endpoint+'joinSession',body,httpOptions);
+  }
+
+
+
 }
 
