@@ -61,7 +61,7 @@ export class RestService {
   {
     let body = JSON.stringify(object);
     console.log(body);
-    return this.http.post(this.endpoint+'getSession',body,httpOptions);
+    return this.http.post(this.endpoint+'getSession',body,httpOptions).toPromise();
   }
 
 

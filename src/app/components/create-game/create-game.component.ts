@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RestService } from '../../services/rest.service';
 import { PassObject } from '../../services/object.service';
 import { Options } from '../../interfaces/options.interface';
+import { container } from '@angular/core/src/render3';
 
 
 @Component({
@@ -39,7 +40,8 @@ export class CreateGameComponent implements OnInit {
     playerTwo:"",
     ptsPlayerOne:0,
     ptsPlayerTwo:0,
-    graphicBoard:[]
+    graphicBoard:[],
+    currentPlayer: ""
   }
 
    //Backup of the Object
@@ -61,6 +63,12 @@ export class CreateGameComponent implements OnInit {
     if(this._object.var1== "GG")
     {
         console.log("Vengo de un join")
+        this.objectToPaint.graphicBoard = [];
+        this.tablero=[];
+        this.objectToPaint.playerOne =  "";
+        this.objectToPaint.token = "";
+        this.objectToPaint.ptsPlayerOne = 0;
+        this.objectToPaint.ptsPlayerTwo = 0;
         this.token = this._object.tokenParaJoin;
         this.paintFinal();
         this.loading = true;
@@ -69,6 +77,12 @@ export class CreateGameComponent implements OnInit {
     else{
       console.log("Vengo de un createSession");
       console.log('Valores del objeto',this.object);
+      this.objectToPaint.graphicBoard = [];
+      this.tablero=[];
+      this.objectToPaint.playerOne =  "";
+      this.objectToPaint.token = "";
+      this.objectToPaint.ptsPlayerOne = 0;
+      this.objectToPaint.ptsPlayerTwo = 0;
       this.createSession();
     }
    
@@ -79,8 +93,8 @@ export class CreateGameComponent implements OnInit {
 
   async cambioEstado(){
     console.log('Cambio de Estado')
-    var json = {token:this.objectGame.key};
-    
+    var json = {token:this.objectToPaint.token};
+    console.log(json);
     const promise = await this._restService.confirmSecondPlayer(json).then(
       data =>
       {
@@ -104,41 +118,38 @@ export class CreateGameComponent implements OnInit {
     }
     this.loading = true;   
     this.paintFinal(); 
-         
   }
 
    paintFinal(){
-    var json={token:this.token};
+    var jsonBody={token:this.token};
     console.log('Valor de mi token para pintar: ',this.token)
-     this._restService.paintBoard(json).subscribe(
-      data =>{ 
-        console.log('Info del Paint: ',data);
-      this.objectToPaint.graphicBoard = data['graphicBoard'];
+    console.log('Entré aquí')
+      this._restService.paintBoard(jsonBody).then(
+      data2 =>{ 
+      console.log('Entré aquí 2')
+      console.log('Info del Paint: ',data2);
+      this.objectToPaint.graphicBoard = data2['graphicBoard'];
       this.tablero=this.objectToPaint.graphicBoard;
-      this.objectToPaint.playerOne =  data['playerOne'];
-      this.objectToPaint.playerTwo =  data['playerTwo'];
-      this.objectToPaint.token = data['token'];
-      this.objectToPaint.ptsPlayerOne = data['ptsPlayerOne'];
-      this.objectToPaint.ptsPlayerTwo = data['ptsPlayerTwo'];
+      this.objectToPaint.playerOne =  data2['playerOne'];
+      this.objectToPaint.playerTwo =  data2['playerTwo'];
+      this.objectToPaint.token = data2['token'];
+      this.objectToPaint.ptsPlayerOne = data2['ptsPlayerOne'];
+      this.objectToPaint.ptsPlayerTwo = data2['ptsPlayerTwo'];
     },
     err => {
-      console.log("Error occured.")
+      console.log("Error occured.");
     }
   )
    }
-
-
    createSession(){
+    console.log("create Session",this.object); 
     this._restService.createSession(this.object).subscribe(
       data =>{ 
         //this.tablero=data['graphicBoardReal'];
-        this.objectGame.currentPlayer = data['currentPlayer'];
-        this.objectGame.graphicBoardReal =  data['graphicBoardReal'];
-        this.objectGame.graphicBoard =  data['graphicBoard'];
-        this.objectGame.key = data['key'];
-        this.token =  this.objectGame.key;
-        this.objectGame.ptsPlayerOne = data['ptsPlayerOne'];
-        this.objectGame.winner = data['winner'];
+        this.objectToPaint.graphicBoard =  data['graphicBoard'];
+        this.objectToPaint.token = data['token'];
+        this.token =  this.objectToPaint.token;
+        this.objectToPaint.ptsPlayerOne = data['ptsPlayerOne'];
       },
       err => {
         console.log("Error occured.")
@@ -150,9 +161,10 @@ export class CreateGameComponent implements OnInit {
   //Function that stores in the api the cards selected by the Players
    positions(fila,columna)
    {
-     
+    console.log("contador al inicio ",this.contador);
      if(this.posX1 == null || this.posX2 == null || this.posY1==null || this.posY2==null)
      {
+      
        if(this.contador==0)
        {
           this.posX1=fila;
@@ -168,13 +180,15 @@ export class CreateGameComponent implements OnInit {
         //se pasan al API
          var objectMovements = 
          {
-           token:this.objectGame.key,
+           token:this.objectToPaint.token,
            posX1: this.posX1,
            posY1: this.posY1,
            posX2: this.posX2,
            posY2: this.posY2,
-           currentPlayer: this.objectGame.currentPlayer
+           currentPlayer: this.objectToPaint.currentPlayer
+           
          }
+         console.log("current player",this.objectGame.currentPlayer)
          this._restService.play(objectMovements).subscribe
          (
            data =>
@@ -183,6 +197,7 @@ export class CreateGameComponent implements OnInit {
              this.objectToPaint.graphicBoard = data['graphicBoard']; // esto no queda así devolver ambas matrices 
              this.objectToPaint.ptsPlayerOne = data['ptsPlayerOne'];
              this.objectToPaint.ptsPlayerTwo= data['ptsPlayerTwo'];
+             this.objectToPaint.currentPlayer= data['currentPlayer'];
              this.tablero = this.objectToPaint.graphicBoard;
             console.log( this.objectGame.currentPlayer)
            },
@@ -192,11 +207,12 @@ export class CreateGameComponent implements OnInit {
            }
          );
         //Se setean en 0;
-        this.posX1=0;
-        this.posY1=0;
-        this.posX2=0;
-        this.posY2=0;
+        this.posX1=null;
+        this.posY1=null;
+        this.posX2=null;
+        this.posY2=null;
         this.contador = 0;
+        console.log("contador al final ",this.contador)
         //Disable de Pantalla;
        }
      }
