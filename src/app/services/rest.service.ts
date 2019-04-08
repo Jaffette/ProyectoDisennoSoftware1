@@ -83,8 +83,15 @@ export class RestService {
     console.log("body in refresh",body);
     return this.http.post(this.endpoint+'askToRefreshPlayTwo',body,httpOptions).toPromise();
   }
-
-  
-
+  getRefreshValuePlayOne(object){
+    let body = JSON.stringify(object);
+    console.log("body in refresh",body);
+    return this.http.post(this.endpoint+'getRefreshValuePlayOne',body,httpOptions).toPromise();
+  }
+  getRefreshValuePlayTwo(object){
+    let body = JSON.stringify(object);
+    console.log("body in refresh",body);
+    return this.http.post(this.endpoint+'getRefreshValuePlayTwo',body,httpOptions).toPromise();
+  }
 }
 
