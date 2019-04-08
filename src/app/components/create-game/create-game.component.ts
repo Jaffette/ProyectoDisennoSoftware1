@@ -3,7 +3,9 @@ import { RestService } from '../../services/rest.service';
 import { PassObject } from '../../services/object.service';
 import { Options } from '../../interfaces/options.interface';
 import { container } from '@angular/core/src/render3';
-
+import {UserService } from '../../services/user.service';
+import { User } from 'firebase';
+import { refreshDescendantViews } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-create-game',
@@ -43,7 +45,7 @@ export class CreateGameComponent implements OnInit {
     graphicBoard:[],
     currentPlayer: ""
   }
-
+  user: UserService;
    //Backup of the Object
    object:Options;
   //recibe el tablero que proviene del API;
@@ -54,12 +56,15 @@ export class CreateGameComponent implements OnInit {
   graphicBoard2;*/
   //Variable que guarda cuando los 2 jugadores ya estan 
   validation = "failed";
-
-  constructor(private _restService: RestService, private _object: PassObject ) {
+  refreshVarPlayOne = true; //Variable to ask if it's time to refresh
+  refreshVarPlayTwo = false;
+  playerOne = "";
+  playerTwo = "";
+  constructor(private _restService: RestService, private _object: PassObject, private _user:UserService ) {
 
     this.loading = false;
     this.object = _object.getObject();
-
+    this.user = _user
     if(this._object.var1== "GG")
     {
         console.log("Vengo de un join")
@@ -71,8 +76,9 @@ export class CreateGameComponent implements OnInit {
         this.objectToPaint.ptsPlayerTwo = 0;
         this.token = this._object.tokenParaJoin;
         this.paintFinal();
+        this.refresh();
         this.loading = true;
-        
+        this.playerTwo = "playerTwo";
     }
     else{
       console.log("Vengo de un createSession");
@@ -84,12 +90,14 @@ export class CreateGameComponent implements OnInit {
       this.objectToPaint.ptsPlayerOne = 0;
       this.objectToPaint.ptsPlayerTwo = 0;
       this.createSession();
+      this.playerOne = "playerOne";
     }
    
    }
   ngOnInit() {
     
   }
+  
 
   async cambioEstado(){
     console.log('Cambio de Estado')
@@ -111,7 +119,94 @@ export class CreateGameComponent implements OnInit {
     return promise;
   }
 
+  askRefreshPlayOne(){
+    var askJson = {token:this.objectToPaint.token}
+    const askPromise = this._restService.askToRefreshPlayOne(askJson).then(
+      data =>
+      {
+        console.log("Lo que llega de la consulta",data);
+        return data['refresh'];
+        
+      },
+      err => 
+      {
+        console.log("Error occured.")
+      }
+    );
+    return askPromise;
+  }
+  askRefreshPlayTwo(){
+    var askJson = {token:this.objectToPaint.token}
+    const askPromise = this._restService.askToRefreshPlayTwo(askJson).then(
+      data =>
+      {
+        console.log("Lo que llega de la consulta",data);
+        return data['refresh'];
+      },
+      err => 
+      {
+        console.log("Error occured.")
+      }
+    );
+    return askPromise;
+  }
+  updateRefreshValuePlayOne(){
+    var refreshJson = {token:this.objectToPaint.token};
+    this._restService.updateRefreshValuePlayOne(refreshJson).then(
+      data =>
+      {
+        console.log("Lo que llega de la consulta",data);
+        //return data['refreshValue'];
+      },
+      err => 
+      {
+        console.log("Error occured.")
+      }
+    );
+  }
+  updateRefreshValuePlayTwo(){
+    var refreshJson = {token:this.objectToPaint.token};
+    this._restService.updateRefreshValuePlayTwo(refreshJson).then(
+      data =>
+      {
+        console.log("Lo que llega de la consulta",data);
+        //return data['refreshValue'];
+      },
+      err => 
+      {
+        console.log("Error occured.")
+      }
+    );
+  }
 
+
+  async refresh(){
+    if(this.playerOne == "playerOne"){
+      while(!this.refreshVarPlayTwo){
+        this.refreshVarPlayTwo = await this.askRefreshPlayOne();
+        //alert(this.refreshVarPlayTwo);
+        console.log("refresh screen to player one",this.refreshVarPlayTwo);
+      }
+      this.loading = true;
+      this.paintFinal()
+    }
+    else if(this.playerTwo == "playerTwo"){
+      while(this.refreshVarPlayOne == true){
+        this.refreshVarPlayOne = await this.askRefreshPlayTwo();
+        console.log("refresh screen to player one",this.refreshVarPlayOne);
+      }
+      this.loading = true;
+      this.paintFinal()
+    }
+    /*while(this.refreshVar == "false"){
+      this.refreshVar = await this.askRefresh();
+      console.log("In waiting for the other player to play");
+    }
+    //this.loading = true;
+    this.paintFinal();*/
+  }
+  
+  
   async paint(){
     while(this.validation == "failed"){
       this.validation = await this.cambioEstado();
@@ -138,9 +233,8 @@ export class CreateGameComponent implements OnInit {
     },
     err => {
       console.log("Error occured.");
-    }
-  )
-   }
+    })
+  }
    createSession(){
     console.log("create Session",this.object); 
     this._restService.createSession(this.object).subscribe(
@@ -156,6 +250,7 @@ export class CreateGameComponent implements OnInit {
       }
     )
   };
+
 
 
   //Function that stores in the api the cards selected by the Players
@@ -185,7 +280,7 @@ export class CreateGameComponent implements OnInit {
            posY1: this.posY1,
            posX2: this.posX2,
            posY2: this.posY2,
-           currentPlayer: this.objectToPaint.currentPlayer
+           //currentPlayer: this.objectToPaint.currentPlayer
            
          }
          console.log("current player",this.objectGame.currentPlayer)
@@ -212,9 +307,21 @@ export class CreateGameComponent implements OnInit {
         this.posX2=null;
         this.posY2=null;
         this.contador = 0;
+        //alert(this.playerOne);
+        //alert(this.playerTwo)
+        if(this.playerOne == "playerOne"){
+          this.updateRefreshValuePlayOne();
+          //this.updateRefreshValuePlayTwo();
+        }
+        else if(this.playerTwo == "playerTwo"){
+          this.updateRefreshValuePlayTwo();
+          //this.updateRefreshValuePlayOne();
+        }
+        this.refresh();
         console.log("contador al final ",this.contador)
         //Disable de Pantalla;
        }
      }
+     
    }
 }
