@@ -12,7 +12,6 @@ import { container } from '@angular/core/src/render3';
 })
 export class CreateGameComponent implements OnInit {
 
-
   token;
   public loading : boolean;
   //La matriz Grafica
@@ -41,6 +40,7 @@ export class CreateGameComponent implements OnInit {
     ptsPlayerOne:0,
     ptsPlayerTwo:0,
     graphicBoard:[],
+    graphicBoard2:[],
     currentPlayer: ""
   }
 
@@ -194,7 +194,8 @@ export class CreateGameComponent implements OnInit {
            data =>
            {
              this.objectToPaint.token = data['token'];
-             this.objectToPaint.graphicBoard = data['graphicBoard']; // esto no queda así devolver ambas matrices 
+             this.objectToPaint.graphicBoard = data['graphicBoard'];
+             this.objectToPaint.graphicBoard2=data['grpahicBoardReal'];
              this.objectToPaint.ptsPlayerOne = data['ptsPlayerOne'];
              this.objectToPaint.ptsPlayerTwo= data['ptsPlayerTwo'];
              this.objectToPaint.currentPlayer= data['currentPlayer'];
