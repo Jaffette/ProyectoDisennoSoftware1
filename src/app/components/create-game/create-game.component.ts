@@ -150,6 +150,7 @@ export class CreateGameComponent implements OnInit {
     );
     return askPromise;
   }
+
   updateRefreshValuePlayOne(){
     var refreshJson = {token:this.objectToPaint.token};
     this._restService.updateRefreshValuePlayOne(refreshJson).then(
@@ -164,6 +165,7 @@ export class CreateGameComponent implements OnInit {
       }
     );
   }
+
   updateRefreshValuePlayTwo(){
     var refreshJson = {token:this.objectToPaint.token};
     this._restService.updateRefreshValuePlayTwo(refreshJson).then(
@@ -184,7 +186,6 @@ export class CreateGameComponent implements OnInit {
     if(this.playerOne == "playerOne"){
       while(!this.refreshVarPlayTwo){
         this.refreshVarPlayTwo = await this.askRefreshPlayOne();
-        //alert(this.refreshVarPlayTwo);
         console.log("refresh screen to player one",this.refreshVarPlayTwo);
       }
       this.loading = true;
@@ -198,12 +199,6 @@ export class CreateGameComponent implements OnInit {
       this.loading = true;
       this.paintFinal()
     }
-    /*while(this.refreshVar == "false"){
-      this.refreshVar = await this.askRefresh();
-      console.log("In waiting for the other player to play");
-    }
-    //this.loading = true;
-    this.paintFinal();*/
   }
   
   
@@ -289,12 +284,11 @@ export class CreateGameComponent implements OnInit {
            data =>
            {
              this.objectToPaint.token = data['token'];
-             this.objectToPaint.graphicBoard = data['graphicBoard'];
-             this.objectToPaint.graphicBoard2=data['grpahicBoardReal'];
+             this.objectToPaint.graphicBoard = data['graphicBoard'];//ESta es la que queda
+             this.objectToPaint.graphicBoard2=data['graphicBoard2'];
              this.objectToPaint.ptsPlayerOne = data['ptsPlayerOne'];
              this.objectToPaint.ptsPlayerTwo= data['ptsPlayerTwo'];
              this.objectToPaint.currentPlayer= data['currentPlayer'];
-             this.tablero = this.objectToPaint.graphicBoard;
             console.log( this.objectGame.currentPlayer)
            },
            err =>
@@ -302,6 +296,11 @@ export class CreateGameComponent implements OnInit {
               console.log("Error while Playing");
            }
          );
+         this.tablero = this.objectToPaint.graphicBoard2
+          console.log('Pintabdo la no definitiva', this.tablero);
+         setTimeout(()=>{ this.tablero = this.objectToPaint.graphicBoard; console.log('La definitiva')},2000);
+       
+
         //Se setean en 0;
         this.posX1=null;
         this.posY1=null;
