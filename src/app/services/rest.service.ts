@@ -63,8 +63,28 @@ export class RestService {
     console.log(body);
     return this.http.post(this.endpoint+'getSession',body,httpOptions).toPromise();
   }
+  updateRefreshValuePlayOne(object){
+    let body = JSON.stringify(object);
+    console.log("body in refresh",body);
+    return this.http.post(this.endpoint+'updateRefreshValuePlayOne',body,httpOptions).toPromise();
+  }
+  updateRefreshValuePlayTwo(object){
+    let body = JSON.stringify(object);
+    console.log("body in refresh",body);
+    return this.http.post(this.endpoint+'updateRefreshValuePlayTwo',body,httpOptions).toPromise();
+  }
+  askToRefreshPlayOne(object){
+    let body = JSON.stringify(object);
+    console.log("body in refresh",body);
+    return this.http.post(this.endpoint+'askToRefreshPlayOne',body,httpOptions).toPromise();
+  }
+  askToRefreshPlayTwo(object){
+    let body = JSON.stringify(object);
+    console.log("body in refresh",body);
+    return this.http.post(this.endpoint+'askToRefreshPlayTwo',body,httpOptions).toPromise();
+  }
 
-
+  
 
 }
 
