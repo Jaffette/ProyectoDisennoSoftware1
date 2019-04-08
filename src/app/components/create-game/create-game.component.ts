@@ -157,7 +157,7 @@ export class CreateGameComponent implements OnInit {
       data =>
       {
         console.log("Lo que llega de la consulta",data);
-        //return data['refreshValue'];
+        return data['value'];
       },
       err => 
       {
@@ -172,7 +172,7 @@ export class CreateGameComponent implements OnInit {
       data =>
       {
         console.log("Lo que llega de la consulta",data);
-        //return data['refreshValue'];
+        //return data['value'];
       },
       err => 
       {
@@ -180,8 +180,38 @@ export class CreateGameComponent implements OnInit {
       }
     );
   }
-
-
+  async getRefreshValuePlayOne(){
+    var refreshJson = {token:this.objectToPaint.token};
+    const answerUpdate = await this._restService.getRefreshValuePlayOne(refreshJson).then(
+      data =>
+      {
+        console.log("Lo que llega de la consulta",data);
+        return data['value'];
+      },
+      err => 
+      {
+        console.log("Error occured.")
+      }
+    );
+    console.log("Player one ", answerUpdate)
+    return answerUpdate;
+  }
+  async getRefreshValuePlayTwo(){
+    var refreshJson = {token:this.objectToPaint.token};
+    const answerUpdate = await this._restService.getRefreshValuePlayTwo(refreshJson).then(
+      data =>
+      {
+        console.log("Lo que llega de la consulta",data);
+        return data['value'];
+      },
+      err => 
+      {
+        console.log("Error occured.")
+      }
+    );
+    console.log("Player one ", answerUpdate)
+    return answerUpdate;
+  }
   async refresh(){
     if(this.playerOne == "playerOne"){
       while(!this.refreshVarPlayTwo){
@@ -189,6 +219,10 @@ export class CreateGameComponent implements OnInit {
         console.log("refresh screen to player one",this.refreshVarPlayTwo);
       }
       this.loading = true;
+      alert(this.getRefreshValuePlayTwo());
+      if(this.getRefreshValuePlayTwo()){
+        this.updateRefreshValuePlayTwo()
+      }
       this.paintFinal()
     }
     else if(this.playerTwo == "playerTwo"){
@@ -197,6 +231,9 @@ export class CreateGameComponent implements OnInit {
         console.log("refresh screen to player one",this.refreshVarPlayOne);
       }
       this.loading = true;
+      if(this.getRefreshValuePlayOne()){
+        this.updateRefreshValuePlayOne();
+      }
       this.paintFinal()
     }
   }
