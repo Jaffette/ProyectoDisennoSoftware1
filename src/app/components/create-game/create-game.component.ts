@@ -56,8 +56,8 @@ export class CreateGameComponent implements OnInit {
   graphicBoard2;*/
   //Variable que guarda cuando los 2 jugadores ya estan 
   validation = "failed";
-  refreshVarPlayOne = true; //Variable to ask if it's time to refresh
-  refreshVarPlayTwo = false;
+  refreshVarPlayOne = false; //Variable to ask if it's time to refresh
+  refreshVarPlayTwo = true;
   playerOne = "";
   playerTwo = "";
   constructor(private _restService: RestService, private _object: PassObject, private _user:UserService ) {
@@ -67,7 +67,7 @@ export class CreateGameComponent implements OnInit {
     this.user = _user
     if(this._object.var1== "GG")
     {
-        console.log("Vengo de un join")
+        //console.log("Vengo de un join")
         this.objectToPaint.graphicBoard = [];
         this.tablero=[];
         this.objectToPaint.playerOne =  "";
@@ -75,14 +75,15 @@ export class CreateGameComponent implements OnInit {
         this.objectToPaint.ptsPlayerOne = 0;
         this.objectToPaint.ptsPlayerTwo = 0;
         this.token = this._object.tokenParaJoin;
-        this.paintFinal();
-        this.refresh();
-        this.loading = true;
+        //this.paintFinal();
         this.playerTwo = "playerTwo";
+        this.methodToCallRefreshFirst();
+        this.loading = true;
+        
     }
     else{
-      console.log("Vengo de un createSession");
-      console.log('Valores del objeto',this.object);
+      //console.log("Vengo de un createSession");
+      //console.log('Valores del objeto',this.object);
       this.objectToPaint.graphicBoard = [];
       this.tablero=[];
       this.objectToPaint.playerOne =  "";
@@ -98,39 +99,116 @@ export class CreateGameComponent implements OnInit {
     
   }
   
-
+  async methodToCallRefreshFirst(){
+    await this.paintFinal();
+    await this.refreshForPlayerTwo();
+  }
   async cambioEstado(){
-    console.log('Cambio de Estado')
+    //console.log('Cambio de Estado')
     var json = {token:this.objectToPaint.token};
-    console.log(json);
+    //console.log(json);
     const promise = await this._restService.confirmSecondPlayer(json).then(
       data =>
       {
-        console.log("Lo que llega de la consulta",data);
+        //console.log("Lo que llega de la consulta",data);
         return data['state'];
       },
       err => 
       {
-        console.log("Error occured.")
+        //console.log("Error occured.")
         return null
       }
     );
-    console.log(promise);
+    //console.log(promise);
     return promise;
   }
+  async askRefresh(){
+    var askJson = {token:this.objectToPaint.token}
+    const askPromise = await this._restService.getRefreshValue(askJson).then(
+      data =>
+      {
+        console.log("Lo que llega de la consulta",data);
+        return data['value'];
+        
+      },
+      err => 
+      {
+        //console.log("Error occured.")
+      }
+    );
+    return askPromise;
+  }
+  async updateRefreshValue(){
+    var refreshJson = {token:this.objectToPaint.token};
+    await this._restService.updateRefreshValue(refreshJson).then(
+      data =>
+      {
+        //console.log("Lo que llega de la consulta",data);
+        //return data['value'];
+      },
+      err => 
+      {
+        console.log("Error occured.")
+      }
+    );
+  }
+  async refreshForPlayerOne(){
+    console.log("refresh player one");
+    console.log("refreshVarPlayTwo",this.refreshVarPlayOne);
+    if(this.playerOne == "playerOne"){
+      while(!this.refreshVarPlayOne){
+        this.refreshVarPlayOne = await this.askRefresh();
+        //alert(this.refreshVarPlayOne);
+        console.log("refresh screen to player one",this.refreshVarPlayOne);
+      }
+      console.log("I will refresh the player two")
+      console.log("refreshVarPlayTwo",this.refreshVarPlayOne);
+      console.log("Salió del while");
+      this.loading = true;
+      //await this.updateRefreshValuePlayTwo();
+      /*var refreshValuePlayTwo =  await this.getRefreshValuePlayTwo();
+      ///alert(refreshValuePlayTwo);
+      if( refreshValuePlayTwo == true){
+      console.log("entró al if para cambiar el estado del player two")
+      this.refreshVarPlayTwo = false;
+      this.updateRefreshValuePlayTwo()
+      }*/
+      this.paintFinal()
+    }
+  }
+  async refreshForPlayerTwo(){
+    if(this.playerTwo == "playerTwo"){
+      console.log("Refresh var player two")
+      while(this.refreshVarPlayTwo){
+        this.refreshVarPlayTwo = await this.askRefresh();
+        //alert(this.refreshVarPlayTwo);
+        console.log("refresh screen to player two",this.refreshVarPlayTwo);
+      }
+      this.loading = true;
+      
+      //await this.updateRefreshValuePlayOne();
+       this.paintFinal()
+    }
+  }
+  async changeVar1(){
+    this.refreshVarPlayOne = false;
+  }
 
-  askRefreshPlayOne(){
+  async changeVar2(){
+    this.refreshVarPlayTwo = true;
+  }
+  /*askRefreshPlayOne(){
     var askJson = {token:this.objectToPaint.token}
     const askPromise = this._restService.askToRefreshPlayOne(askJson).then(
       data =>
       {
-        console.log("Lo que llega de la consulta",data);
+        //console.log("Lo que llega de la consulta",data);
         return data['refresh'];
         
       },
       err => 
       {
-        console.log("Error occured.")
+        //console.log("Error occured.")
       }
     );
     return askPromise;
@@ -140,7 +218,7 @@ export class CreateGameComponent implements OnInit {
     const askPromise = this._restService.askToRefreshPlayTwo(askJson).then(
       data =>
       {
-        console.log("Lo que llega de la consulta",data);
+        //console.log("Lo que llega de la consulta",data);
         return data['refresh'];
       },
       err => 
@@ -155,7 +233,7 @@ export class CreateGameComponent implements OnInit {
     this._restService.updateRefreshValuePlayOne(refreshJson).then(
       data =>
       {
-        console.log("Lo que llega de la consulta",data);
+        //console.log("Lo que llega de la consulta",data);
         return data['value'];
       },
       err => 
@@ -169,7 +247,7 @@ export class CreateGameComponent implements OnInit {
     this._restService.updateRefreshValuePlayTwo(refreshJson).then(
       data =>
       {
-        console.log("Lo que llega de la consulta",data);
+        //console.log("Lo que llega de la consulta",data);
         //return data['value'];
       },
       err => 
@@ -210,40 +288,49 @@ export class CreateGameComponent implements OnInit {
     console.log("Player one ", answerUpdate)
     return answerUpdate;
   }
-  async refresh(){
+  async changeVar1(){
+    this.refreshVarPlayTwo = false;
+  }
+
+  async changeVar2(){
+    this.refreshVarPlayOne = true;
+  }
+  async refreshForPlayerOne(){
+    console.log("refresh player one");
+    console.log("refreshVarPlayTwo",this.refreshVarPlayOne);
     if(this.playerOne == "playerOne"){
       while(!this.refreshVarPlayTwo){
         this.refreshVarPlayTwo = await this.askRefreshPlayOne();
         //alert(this.refreshVarPlayTwo);
         console.log("refresh screen to player one",this.refreshVarPlayTwo);
       }
+      console.log("I will refresh the player two")
+      console.log("refreshVarPlayTwo",this.refreshVarPlayOne);
+      console.log("Salió del while");
       this.loading = true;
-      alert(this.getRefreshValuePlayTwo());
-      if(this.getRefreshValuePlayTwo()){
-        this.updateRefreshValuePlayTwo()
+      await this.updateRefreshValuePlayTwo();
+      /*var refreshValuePlayTwo =  await this.getRefreshValuePlayTwo();
+      ///alert(refreshValuePlayTwo);
+      if( refreshValuePlayTwo == true){
+      console.log("entró al if para cambiar el estado del player two")
+      this.refreshVarPlayTwo = false;
+      this.updateRefreshValuePlayTwo()
       }
-      this.paintFinal()
+      await this.paintFinal()
     }
-    else if(this.playerTwo == "playerTwo"){
-      while(this.refreshVarPlayOne == true){
-        this.refreshVarPlayOne = await this.askRefreshPlayTwo();
-        console.log("refresh screen to player one",this.refreshVarPlayOne);
-      }
-      this.loading = true;
-      if(this.getRefreshValuePlayOne()){
-        this.updateRefreshValuePlayOne();
-      }
-      this.paintFinal()
-    }
-    /*while(this.refreshVar == "false"){
-      this.refreshVar = await this.askRefresh();
-      console.log("In waiting for the other player to play");
-    }
-    //this.loading = true;
-    this.paintFinal();*/
   }
-  
-  
+  async refreshForPlayerTwo(){
+    if(this.playerTwo == "playerTwo"){
+      while(this.refreshVarPlayOne){
+        this.refreshVarPlayOne = await this.askRefreshPlayTwo();
+        console.log("refresh screen to player two",this.refreshVarPlayOne);
+      }
+      this.loading = true;
+      console.log("I will refresh the player one")
+      await this.updateRefreshValuePlayOne();
+      await this.paintFinal()
+    }
+  }*/
   async paint(){
     while(this.validation == "failed"){
       this.validation = await this.cambioEstado();
@@ -254,12 +341,12 @@ export class CreateGameComponent implements OnInit {
 
    paintFinal(){
     var jsonBody={token:this.token};
-    console.log('Valor de mi token para pintar: ',this.token)
-    console.log('Entré aquí')
+    //console.log('Valor de mi token para pintar: ',this.token)
+    //console.log('Entré aquí')
       this._restService.paintBoard(jsonBody).then(
       data2 =>{ 
-      console.log('Entré aquí 2')
-      console.log('Info del Paint: ',data2);
+      //console.log('Entré aquí 2')
+      //console.log('Info del Paint: ',data2);
       this.objectToPaint.graphicBoard = data2['graphicBoard'];
       this.tablero=this.objectToPaint.graphicBoard;
       this.objectToPaint.playerOne =  data2['playerOne'];
@@ -273,7 +360,7 @@ export class CreateGameComponent implements OnInit {
     })
   }
    createSession(){
-    console.log("create Session",this.object); 
+    //console.log("create Session",this.object); 
     this._restService.createSession(this.object).subscribe(
       data =>{ 
         //this.tablero=data['graphicBoardReal'];
@@ -291,9 +378,9 @@ export class CreateGameComponent implements OnInit {
 
 
   //Function that stores in the api the cards selected by the Players
-   positions(fila,columna)
+  async positions(fila,columna)
    {
-    console.log("contador al inicio ",this.contador);
+    //console.log("contador al inicio ",this.contador);
      if(this.posX1 == null || this.posX2 == null || this.posY1==null || this.posY2==null)
      {
       
@@ -307,8 +394,8 @@ export class CreateGameComponent implements OnInit {
        {
         this.posX2=fila;
         this.posY2=columna;
-        alert("Se insertaron las 4 posiciones");
-        console.log("PosX1: "+this.posX1+" PosY1"+this.posY1+" PosX2: "+this.posX2+" PosY2: "+this.posY2);  
+        //alert("Se insertaron las 4 posiciones");
+        //console.log("PosX1: "+this.posX1+" PosY1"+this.posY1+" PosX2: "+this.posX2+" PosY2: "+this.posY2);  
         //se pasan al API
          var objectMovements = 
          {
@@ -320,7 +407,7 @@ export class CreateGameComponent implements OnInit {
            //currentPlayer: this.objectToPaint.currentPlayer
            
          }
-         console.log("current player",this.objectGame.currentPlayer)
+         //console.log("current player",this.objectGame.currentPlayer)
          this._restService.play(objectMovements).subscribe
          (
            data =>
@@ -331,7 +418,7 @@ export class CreateGameComponent implements OnInit {
              this.objectToPaint.ptsPlayerTwo= data['ptsPlayerTwo'];
              this.objectToPaint.currentPlayer= data['currentPlayer'];
              this.tablero = this.objectToPaint.graphicBoard;
-            console.log( this.objectGame.currentPlayer)
+            //console.log( this.objectGame.currentPlayer)
            },
            err =>
            {
@@ -339,26 +426,29 @@ export class CreateGameComponent implements OnInit {
            }
          );
         //Se setean en 0;
-        this.posX1=null;
-        this.posY1=null;
-        this.posX2=null;
-        this.posY2=null;
+        this.posX1 = null;
+        this.posY1 = null;
+        this.posX2 = null;
+        this.posY2 = null;
         this.contador = 0;
         //alert(this.playerOne);
         //alert(this.playerTwo)
         if(this.playerOne == "playerOne"){
-          this.updateRefreshValuePlayOne();
-          //this.updateRefreshValuePlayTwo();
+          await this.updateRefreshValue();
+          //await this.updateRefreshValuePlayTwo();
+          this.refreshVarPlayOne = false;
+          await this.refreshForPlayerOne();
+
         }
         else if(this.playerTwo == "playerTwo"){
-          this.updateRefreshValuePlayTwo();
-          //this.updateRefreshValuePlayOne();
+          await this.updateRefreshValue();
+          //await this.updateRefreshValuePlayTwo();
+          this.refreshVarPlayTwo = true;
+          await this.refreshForPlayerTwo();
         }
-        this.refresh();
-        console.log("contador al final ",this.contador)
+        //console.log("contador al final ",this.contador)
         //Disable de Pantalla;
        }
      }
-     
    }
 }

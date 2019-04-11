@@ -26,21 +26,18 @@ export class RestService {
   }
   createSession(object){
     let body = JSON.stringify(object);
-    console.log(body);
     return this.http.post(this.endpoint+'createSesion',body,httpOptions);
   }
   
   play(object)
   {
     let body = JSON.stringify(object);
-    console.log(body);
     return this.http.post(this.endpoint+'playGame',body,httpOptions);
   }
 
   confirmSecondPlayer(object)
   {
     let body = JSON.stringify(object);
-    console.log('Body del servicio',body);
     return this.http.post(this.endpoint+'sessionComplete',body,httpOptions).toPromise();
   }
   
@@ -53,45 +50,38 @@ export class RestService {
   joinSession(object)
   {
     let body = JSON.stringify(object);
-    console.log(body);
     return this.http.post(this.endpoint+'joinSession',body,httpOptions);
   }
 
   paintBoard(object)
   {
     let body = JSON.stringify(object);
-    console.log(body);
     return this.http.post(this.endpoint+'getSession',body,httpOptions).toPromise();
   }
-  updateRefreshValuePlayOne(object){
+  updateRefreshValue(object){
     let body = JSON.stringify(object);
-    console.log("body in refresh",body);
-    return this.http.post(this.endpoint+'updateRefreshValuePlayOne',body,httpOptions).toPromise();
+    return this.http.post(this.endpoint+'updateRefreshValue',body,httpOptions).toPromise();
   }
-  updateRefreshValuePlayTwo(object){
+  /*updateRefreshValuePlayTwo(object){
     let body = JSON.stringify(object);
-    console.log("body in refresh",body);
     return this.http.post(this.endpoint+'updateRefreshValuePlayTwo',body,httpOptions).toPromise();
-  }
-  askToRefreshPlayOne(object){
+  }*/
+ /* askToRefreshPlayOne(object){
     let body = JSON.stringify(object);
-    console.log("body in refresh",body);
     return this.http.post(this.endpoint+'askToRefreshPlayOne',body,httpOptions).toPromise();
   }
   askToRefreshPlayTwo(object){
     let body = JSON.stringify(object);
-    console.log("body in refresh",body);
     return this.http.post(this.endpoint+'askToRefreshPlayTwo',body,httpOptions).toPromise();
-  }
-  getRefreshValuePlayOne(object){
+  }*/
+  getRefreshValue(object){
     let body = JSON.stringify(object);
-    console.log("body in refresh",body);
-    return this.http.post(this.endpoint+'getRefreshValuePlayOne',body,httpOptions).toPromise();
+    console.log(body)
+    return this.http.post(this.endpoint+'getRefreshValue',body,httpOptions).toPromise();
   }
-  getRefreshValuePlayTwo(object){
+ /* getRefreshValuePlayTwo(object){
     let body = JSON.stringify(object);
-    console.log("body in refresh",body);
     return this.http.post(this.endpoint+'getRefreshValuePlayTwo',body,httpOptions).toPromise();
-  }
+  }*/
 }
 
