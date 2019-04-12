@@ -4,8 +4,6 @@ import { PassObject } from '../../services/object.service';
 import { Options } from '../../interfaces/options.interface';
 import { container } from '@angular/core/src/render3';
 import {UserService } from '../../services/user.service';
-import { User } from 'firebase';
-import { refreshDescendantViews } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-create-game',
@@ -13,8 +11,9 @@ import { refreshDescendantViews } from '@angular/core/src/render3/instructions';
   styleUrls: ['./create-game.component.css']
 })
 export class CreateGameComponent implements OnInit {
-
+  showMessages;
   token;
+  message;
   public loading : boolean;
   //La matriz Grafica
   //Contador para verificar 
@@ -50,10 +49,7 @@ export class CreateGameComponent implements OnInit {
    object:Options;
   //recibe el tablero que proviene del API;
   public tablero;
- /*
-  //Graphicboards
-  graphicBoard1;
-  graphicBoard2;*/
+
   //Variable que guarda cuando los 2 jugadores ya estan 
   validation = "failed";
   refreshVarPlayOne = true; //Variable to ask if it's time to refresh
@@ -95,7 +91,6 @@ export class CreateGameComponent implements OnInit {
    
    }
   ngOnInit() {
-    
   }
   
 
@@ -157,7 +152,7 @@ export class CreateGameComponent implements OnInit {
       data =>
       {
         console.log("Lo que llega de la consulta",data);
-        return data['value'];
+        //return data['refreshValue'];
       },
       err => 
       {
@@ -172,7 +167,7 @@ export class CreateGameComponent implements OnInit {
       data =>
       {
         console.log("Lo que llega de la consulta",data);
-        //return data['value'];
+        //return data['refreshValue'];
       },
       err => 
       {
@@ -180,38 +175,8 @@ export class CreateGameComponent implements OnInit {
       }
     );
   }
-  async getRefreshValuePlayOne(){
-    var refreshJson = {token:this.objectToPaint.token};
-    const answerUpdate = await this._restService.getRefreshValuePlayOne(refreshJson).then(
-      data =>
-      {
-        console.log("Lo que llega de la consulta",data);
-        return data['value'];
-      },
-      err => 
-      {
-        console.log("Error occured.")
-      }
-    );
-    console.log("Player one ", answerUpdate)
-    return answerUpdate;
-  }
-  async getRefreshValuePlayTwo(){
-    var refreshJson = {token:this.objectToPaint.token};
-    const answerUpdate = await this._restService.getRefreshValuePlayTwo(refreshJson).then(
-      data =>
-      {
-        console.log("Lo que llega de la consulta",data);
-        return data['value'];
-      },
-      err => 
-      {
-        console.log("Error occured.")
-      }
-    );
-    console.log("Player one ", answerUpdate)
-    return answerUpdate;
-  }
+
+
   async refresh(){
     if(this.playerOne == "playerOne"){
       while(!this.refreshVarPlayTwo){
@@ -219,10 +184,6 @@ export class CreateGameComponent implements OnInit {
         console.log("refresh screen to player one",this.refreshVarPlayTwo);
       }
       this.loading = true;
-      alert(this.getRefreshValuePlayTwo());
-      if(this.getRefreshValuePlayTwo()){
-        this.updateRefreshValuePlayTwo()
-      }
       this.paintFinal()
     }
     else if(this.playerTwo == "playerTwo"){
@@ -231,9 +192,6 @@ export class CreateGameComponent implements OnInit {
         console.log("refresh screen to player one",this.refreshVarPlayOne);
       }
       this.loading = true;
-      if(this.getRefreshValuePlayOne()){
-        this.updateRefreshValuePlayOne();
-      }
       this.paintFinal()
     }
   }
@@ -286,8 +244,9 @@ export class CreateGameComponent implements OnInit {
 
 
   //Function that stores in the api the cards selected by the Players
-   positions(fila,columna)
+   async positions(fila,columna)
    {
+    
     console.log("contador al inicio ",this.contador);
      if(this.posX1 == null || this.posX2 == null || this.posY1==null || this.posY2==null)
      {
@@ -302,7 +261,6 @@ export class CreateGameComponent implements OnInit {
        {
         this.posX2=fila;
         this.posY2=columna;
-        alert("Se insertaron las 4 posiciones");
         console.log("PosX1: "+this.posX1+" PosY1"+this.posY1+" PosX2: "+this.posX2+" PosY2: "+this.posY2);  
         //se pasan al API
          var objectMovements = 
@@ -333,11 +291,9 @@ export class CreateGameComponent implements OnInit {
               console.log("Error while Playing");
            }
          );
-         this.tablero = this.objectToPaint.graphicBoard2
-          console.log('Pintabdo la no definitiva', this.tablero);
-         setTimeout(()=>{ this.tablero = this.objectToPaint.graphicBoard; console.log('La definitiva')},2000);
-       
-
+         
+         await this.repaint();
+  
         //Se setean en 0;
         this.posX1=null;
         this.posY1=null;
@@ -355,10 +311,54 @@ export class CreateGameComponent implements OnInit {
           //this.updateRefreshValuePlayOne();
         }
         this.refresh();
-        console.log("contador al final ",this.contador)
-        //Disable de Pantalla;
+        console.log("contador al final ",this.contador);
        }
      }
      
    }
+
+   async repaint()
+   {
+    this.tablero = this.objectToPaint.graphicBoard2;
+    console.log('Pintando la no definitiva', this.tablero);
+    await setTimeout(()=>{ this.tablero = this.objectToPaint.graphicBoard; console.log('La definitiva',this.tablero)},2000);
+   }
+
+   async sendMessage()
+   {
+     var player:string;
+     this.message
+     console.log(this.message);
+    if(this._object.var1== "GG")
+    {
+      player= "playerTwo";
+    }
+    else{
+      player= "playerOne";
+    }
+    var dataToSend = {token:this.objectToPaint.token, msg:this.message, player:player }
+    await this._restService.sendMessage(dataToSend);
+    this.readMessages();
+   }
+
+   async readMessages()
+   {
+      this.showMessages= document.getElementById('chatToShow');
+     var dataToSend = {token:this.objectToPaint.token};
+    // while(true){
+      await this._restService.getMessage(dataToSend).subscribe(
+        dataToShow =>{ 
+          this.showMessages= this.showMessages+'\n PlayerOne: '+dataToShow['message1'];
+          this.showMessages= this.showMessages+'\n PleyerTwo: '+dataToShow['message2'];
+          console.log('Se muestran los mensajes',this.showMessages);
+      },
+      err =>
+      {
+        alert('Tu mensaje no puso ser enviado');
+      }
+      );
+    // }
+ 
+   }
+
 }

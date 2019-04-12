@@ -93,5 +93,18 @@ export class RestService {
     console.log("body in refresh",body);
     return this.http.post(this.endpoint+'getRefreshValuePlayTwo',body,httpOptions).toPromise();
   }
+
+  sendMessage(object)
+  {
+    let body = JSON.stringify(object);
+    console.log("body in sendMessage");
+    return this.http.post(this.endpoint+'setMessage',body,httpOptions).toPromise();
+  }
+
+  getMessage(object)
+  {
+    let body = JSON.stringify(object);
+    return this.http.post(this.endpoint+'getMessage',body,httpOptions);
+  }
 }
 

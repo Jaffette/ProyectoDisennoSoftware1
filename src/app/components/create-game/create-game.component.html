@@ -9,6 +9,7 @@
         <br>
         <h2 class="h2">{{objectToPaint.playerOne}}</h2>
         <h2 class="h2">Points: {{objectToPaint.ptsPlayerOne}}</h2>
+        <hr>
     </div>
     <br>
 
@@ -23,8 +24,10 @@
             </tr>
 
         </table>
+
     </div>
 
+    <br>
 
     <br>
     <div>
@@ -33,4 +36,14 @@
         <h2 class="h2">{{objectToPaint.playerTwo}}</h2>
         <h2 class="h2">Points: {{objectToPaint.ptsPlayerTwo}}</h2>
     </div>
+
+    <div class="chat">
+        <label>CHAT</label>
+        <textarea readonly="readonly" name="chat" id="chatToShow" value={{this.showMessages}} cols="80" rows="20">Aquí estoy</textarea>
+        <hr>
+        <input type="text" id="messageToSend" [(ngModel)]="message">
+        <button class="btn btn-danger" (click)="sendMessage()">SEND</button>
+    </div>
+
+
 </div>
