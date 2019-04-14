@@ -11,7 +11,7 @@ import {UserService } from '../../services/user.service';
   styleUrls: ['./create-game.component.css']
 })
 export class CreateGameComponent implements OnInit {
-  showMessages;
+  showMessages:string ="";
   token;
   message;
   public loading : boolean;
@@ -49,11 +49,11 @@ export class CreateGameComponent implements OnInit {
    object:Options;
   //recibe el tablero que proviene del API;
   public tablero;
-
+  ableDisableBoard:boolean;
   //Variable que guarda cuando los 2 jugadores ya estan 
   validation = "failed";
-  refreshVarPlayOne = true; //Variable to ask if it's time to refresh
-  refreshVarPlayTwo = false;
+  refreshVarPlayOne = false; //Variable to ask if it's time to refresh
+  refreshVarPlayTwo = true;
   playerOne = "";
   playerTwo = "";
   constructor(private _restService: RestService, private _object: PassObject, private _user:UserService ) {
@@ -63,7 +63,7 @@ export class CreateGameComponent implements OnInit {
     this.user = _user
     if(this._object.var1== "GG")
     {
-        console.log("Vengo de un join")
+        //console.log("Vengo de un join")
         this.objectToPaint.graphicBoard = [];
         this.tablero=[];
         this.objectToPaint.playerOne =  "";
@@ -71,14 +71,18 @@ export class CreateGameComponent implements OnInit {
         this.objectToPaint.ptsPlayerOne = 0;
         this.objectToPaint.ptsPlayerTwo = 0;
         this.token = this._object.tokenParaJoin;
-        this.paintFinal();
-        this.refresh();
-        this.loading = true;
+        this.ableDisableBoard = false;
+        console.log('valor del tablero en el constructor cuando soy del join',this.ableDisableBoard);
+        //this.paintFinal();
         this.playerTwo = "playerTwo";
+        this.methodToCallRefreshFirst();
+        this.loading = true;
+        
     }
     else{
-      console.log("Vengo de un createSession");
-      console.log('Valores del objeto',this.object);
+      //console.log("Vengo de un createSession");
+      this.ableDisableBoard = true;
+      console.log('valor del tablero en el constructor cuando soy del create',this.ableDisableBoard);
       this.objectToPaint.graphicBoard = [];
       this.tablero=[];
       this.objectToPaint.playerOne =  "";
@@ -93,34 +97,34 @@ export class CreateGameComponent implements OnInit {
   ngOnInit() {
   }
   
+  async methodToCallRefreshFirst(){
+    await this.paintFinal();
+    await this.refreshForPlayerTwo();
+  }
 
   async cambioEstado(){
-    console.log('Cambio de Estado')
     var json = {token:this.objectToPaint.token};
-    console.log(json);
     const promise = await this._restService.confirmSecondPlayer(json).then(
       data =>
       {
-        console.log("Lo que llega de la consulta",data);
         return data['state'];
       },
       err => 
       {
-        console.log("Error occured.")
+        
         return null
       }
     );
-    console.log(promise);
     return promise;
   }
 
-  askRefreshPlayOne(){
+  async askRefresh(){
     var askJson = {token:this.objectToPaint.token}
-    const askPromise = this._restService.askToRefreshPlayOne(askJson).then(
+    const askPromise = await this._restService.getRefreshValue(askJson).then(
       data =>
       {
         console.log("Lo que llega de la consulta",data);
-        return data['refresh'];
+        return data['value'];
         
       },
       err => 
@@ -130,29 +134,13 @@ export class CreateGameComponent implements OnInit {
     );
     return askPromise;
   }
-  askRefreshPlayTwo(){
-    var askJson = {token:this.objectToPaint.token}
-    const askPromise = this._restService.askToRefreshPlayTwo(askJson).then(
-      data =>
-      {
-        console.log("Lo que llega de la consulta",data);
-        return data['refresh'];
-      },
-      err => 
-      {
-        console.log("Error occured.")
-      }
-    );
-    return askPromise;
-  }
 
-  updateRefreshValuePlayOne(){
+  async updateRefreshValue(){
     var refreshJson = {token:this.objectToPaint.token};
-    this._restService.updateRefreshValuePlayOne(refreshJson).then(
+    await this._restService.updateRefreshValue(refreshJson).then(
       data =>
       {
-        console.log("Lo que llega de la consulta",data);
-        //return data['refreshValue'];
+
       },
       err => 
       {
@@ -160,42 +148,49 @@ export class CreateGameComponent implements OnInit {
       }
     );
   }
-
-  updateRefreshValuePlayTwo(){
-    var refreshJson = {token:this.objectToPaint.token};
-    this._restService.updateRefreshValuePlayTwo(refreshJson).then(
-      data =>
-      {
-        console.log("Lo que llega de la consulta",data);
-        //return data['refreshValue'];
-      },
-      err => 
-      {
-        console.log("Error occured.")
-      }
-    );
-  }
-
-
-  async refresh(){
+  async refreshForPlayerOne(){
+    console.log("refresh player one");
+    console.log("refreshVarPlayTwo",this.refreshVarPlayOne);
     if(this.playerOne == "playerOne"){
-      while(!this.refreshVarPlayTwo){
-        this.refreshVarPlayTwo = await this.askRefreshPlayOne();
-        console.log("refresh screen to player one",this.refreshVarPlayTwo);
-      }
-      this.loading = true;
-      this.paintFinal()
-    }
-    else if(this.playerTwo == "playerTwo"){
-      while(this.refreshVarPlayOne == true){
-        this.refreshVarPlayOne = await this.askRefreshPlayTwo();
+      while(!this.refreshVarPlayOne){
+        this.refreshVarPlayOne = await this.askRefresh();
+        this.ableDisableBoard = false;
+        console.log('cuando estoy en el while del P1',this.ableDisableBoard);
         console.log("refresh screen to player one",this.refreshVarPlayOne);
       }
+      this.ableDisableBoard = true;
+      this.readMessages();
+      console.log('cuando salgo en el while del P!',this.ableDisableBoard);
+      console.log("I will refresh the player two")
+      console.log("refreshVarPlayTwo",this.refreshVarPlayOne);
+      console.log("Salió del while");
       this.loading = true;
       this.paintFinal()
     }
   }
-  
+  async refreshForPlayerTwo(){
+    if(this.playerTwo == "playerTwo"){
+      console.log("Refresh var player two")
+      while(this.refreshVarPlayTwo){
+        this.refreshVarPlayTwo = await this.askRefresh();
+        this.ableDisableBoard = false;
+        console.log('cuando estoy en el while del P2',this.ableDisableBoard);
+        console.log("refresh screen to player two",this.refreshVarPlayTwo);
+      }
+      this.readMessages();
+      this.ableDisableBoard = true;
+      console.log('cuando salgo en el while del P2',this.ableDisableBoard);
+      this.loading = true;
+       this.paintFinal()
+    }
+  }
+  async changeVar1(){
+    this.refreshVarPlayOne = false;
+  }
+
+  async changeVar2(){
+    this.refreshVarPlayTwo = true;
+  }
   
   async paint(){
     while(this.validation == "failed"){
@@ -207,12 +202,12 @@ export class CreateGameComponent implements OnInit {
 
    paintFinal(){
     var jsonBody={token:this.token};
-    console.log('Valor de mi token para pintar: ',this.token)
-    console.log('Entré aquí')
+    //console.log('Valor de mi token para pintar: ',this.token)
+    //console.log('Entré aquí')
       this._restService.paintBoard(jsonBody).then(
       data2 =>{ 
-      console.log('Entré aquí 2')
-      console.log('Info del Paint: ',data2);
+      //console.log('Entré aquí 2')
+      //console.log('Info del Paint: ',data2);
       this.objectToPaint.graphicBoard = data2['graphicBoard'];
       this.tablero=this.objectToPaint.graphicBoard;
       this.objectToPaint.playerOne =  data2['playerOne'];
@@ -226,7 +221,7 @@ export class CreateGameComponent implements OnInit {
     })
   }
    createSession(){
-    console.log("create Session",this.object); 
+    //console.log("create Session",this.object); 
     this._restService.createSession(this.object).subscribe(
       data =>{ 
         //this.tablero=data['graphicBoardReal'];
@@ -244,10 +239,9 @@ export class CreateGameComponent implements OnInit {
 
 
   //Function that stores in the api the cards selected by the Players
-   async positions(fila,columna)
+  async positions(fila,columna)
    {
-    
-    console.log("contador al inicio ",this.contador);
+    //console.log("contador al inicio ",this.contador);
      if(this.posX1 == null || this.posX2 == null || this.posY1==null || this.posY2==null)
      {
       
@@ -261,8 +255,6 @@ export class CreateGameComponent implements OnInit {
        {
         this.posX2=fila;
         this.posY2=columna;
-        console.log("PosX1: "+this.posX1+" PosY1"+this.posY1+" PosX2: "+this.posX2+" PosY2: "+this.posY2);  
-        //se pasan al API
          var objectMovements = 
          {
            token:this.objectToPaint.token,
@@ -273,7 +265,6 @@ export class CreateGameComponent implements OnInit {
            //currentPlayer: this.objectToPaint.currentPlayer
            
          }
-         console.log("current player",this.objectGame.currentPlayer)
          this._restService.play(objectMovements).subscribe
          (
            data =>
@@ -284,44 +275,43 @@ export class CreateGameComponent implements OnInit {
              this.objectToPaint.ptsPlayerOne = data['ptsPlayerOne'];
              this.objectToPaint.ptsPlayerTwo= data['ptsPlayerTwo'];
              this.objectToPaint.currentPlayer= data['currentPlayer'];
-            console.log( this.objectGame.currentPlayer)
+             this.tablero = this.objectToPaint.graphicBoard;
            },
            err =>
            {
               console.log("Error while Playing");
            }
          );
-         
-         await this.repaint();
-  
         //Se setean en 0;
-        this.posX1=null;
-        this.posY1=null;
-        this.posX2=null;
-        this.posY2=null;
+        this.posX1 = null;
+        this.posY1 = null;
+        this.posX2 = null;
+        this.posY2 = null;
         this.contador = 0;
-        //alert(this.playerOne);
-        //alert(this.playerTwo)
         if(this.playerOne == "playerOne"){
-          this.updateRefreshValuePlayOne();
-          //this.updateRefreshValuePlayTwo();
+          await this.updateRefreshValue();
+          this.repaint();
+          this.refreshVarPlayOne = false;
+          await this.refreshForPlayerOne();
+
         }
         else if(this.playerTwo == "playerTwo"){
-          this.updateRefreshValuePlayTwo();
-          //this.updateRefreshValuePlayOne();
+          await this.updateRefreshValue();
+          this.repaint();
+          this.refreshVarPlayTwo = true;
+          await this.refreshForPlayerTwo();
         }
-        this.refresh();
-        console.log("contador al final ",this.contador);
+       
        }
      }
-     
    }
 
    async repaint()
    {
-    this.tablero = this.objectToPaint.graphicBoard2;
+     console.log('Repintando');
+     this.tablero = this.objectToPaint.graphicBoard2;
     console.log('Pintando la no definitiva', this.tablero);
-    await setTimeout(()=>{ this.tablero = this.objectToPaint.graphicBoard; console.log('La definitiva',this.tablero)},2000);
+    await setTimeout(()=>{ this.tablero = this.objectToPaint.graphicBoard; console.log('La definitiva',this.tablero)},5000);
    }
 
    async sendMessage()
@@ -329,6 +319,7 @@ export class CreateGameComponent implements OnInit {
      var player:string;
      this.message
      console.log(this.message);
+     
     if(this._object.var1== "GG")
     {
       player= "playerTwo";
@@ -338,19 +329,22 @@ export class CreateGameComponent implements OnInit {
     }
     var dataToSend = {token:this.objectToPaint.token, msg:this.message, player:player }
     await this._restService.sendMessage(dataToSend);
-    this.readMessages();
+    document.getElementById('messageToSend').replaceWith(' ');
    }
 
    async readMessages()
    {
-      this.showMessages= document.getElementById('chatToShow');
      var dataToSend = {token:this.objectToPaint.token};
     // while(true){
       await this._restService.getMessage(dataToSend).subscribe(
         dataToShow =>{ 
-          this.showMessages= this.showMessages+'\n PlayerOne: '+dataToShow['message1'];
-          this.showMessages= this.showMessages+'\n PleyerTwo: '+dataToShow['message2'];
-          console.log('Se muestran los mensajes',this.showMessages);
+         if(typeof this.showMessages != 'undefined'){
+           if(typeof dataToShow['message1'] != "undefined")
+            this.showMessages+='\n PlayerOne: '+dataToShow['message1'];
+            if(typeof dataToShow['message2'] != "undefined")
+            this.showMessages+='\n PlayerTwo: '+dataToShow['message2'];
+          }
+          
       },
       err =>
       {
