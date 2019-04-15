@@ -75,11 +75,9 @@ export class CreateGameComponent implements OnInit {
         this.objectToPaint.ptsPlayerOne = 0;
         this.objectToPaint.ptsPlayerTwo = 0;
         this.token = this._object.tokenParaJoin;
-        //this.paintFinal();
+        
         this.playerTwo = "playerTwo";
         this.methodToCallRefreshFirst();
-        this.loading = true;
-        
     }
     else{
       //console.log("Vengo de un createSession");
@@ -98,7 +96,6 @@ export class CreateGameComponent implements OnInit {
   ngOnInit() {
     
   }
-  
   async methodToCallRefreshFirst(){
     await this.paintFinal();
     await this.refreshForPlayerTwo();
@@ -123,7 +120,7 @@ export class CreateGameComponent implements OnInit {
     return promise;
   }
   async askRefresh(){
-    var askJson = {token:this.objectToPaint.token}
+    var askJson = {token:this.token}
     const askPromise = await this._restService.getRefreshValue(askJson).then(
       data =>
       {
