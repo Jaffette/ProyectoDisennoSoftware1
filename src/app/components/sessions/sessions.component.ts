@@ -15,15 +15,25 @@ import { PassObject } from '../../services/object.service';
 export class SessionsComponent implements OnInit {
   options = {
     level:"",
-    game:""
+    game:"",
+    route:""
   }
+  
   sessions:any=[];
   currentUser;
   constructor(private _optionService:OptionsService, private user:UserService, private _optionObject: PassObject, private activatedRoute: ActivatedRoute, private _restService:RestService) {
     this.activatedRoute.params.subscribe(params => {
       this.options.game= params['game'];
       this.options.level= params['level']+'/';
-      console.log('Para la vara de la ruta',this.options)
+      console.log('el juego que llega a la vara es ',this.options.game)
+      if(this.options.game == 'Memory'){
+        console.log("soy de memory");
+        this.options.route = '/createSession/';
+      }
+      if(this.options.game == 'Othello'){
+        console.log("soy de othello");
+        this.options.route = '/gameScreen/';
+      }
     });
   this._optionObject.setVar2("join");
    }
@@ -33,6 +43,7 @@ export class SessionsComponent implements OnInit {
   }
 
   showSessions(){
+ 
     var json = {level:this.options.level, game:this.options.game+'/'};
     console.log(json);
     this._restService.getMemorySessions(json).subscribe(
@@ -52,6 +63,7 @@ export class SessionsComponent implements OnInit {
 
   joinSessions(i)
   {
+    console.log('LA RUTA ES: ',this.options.route,this.options.level,this.options.game);
     this._optionObject.setToken(this.sessions[i]['token']);
     console.log('Token del joinSession',this.sessions[i]['token'] )
     var json = {token:this.sessions[i]['token'], email:this.user.showMail()};

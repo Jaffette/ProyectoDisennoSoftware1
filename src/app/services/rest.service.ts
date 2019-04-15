@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
-import { NgModule } from '@angular/core';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -62,26 +59,24 @@ export class RestService {
     let body = JSON.stringify(object);
     return this.http.post(this.endpoint+'updateRefreshValue',body,httpOptions).toPromise();
   }
-  /*updateRefreshValuePlayTwo(object){
-    let body = JSON.stringify(object);
-    return this.http.post(this.endpoint+'updateRefreshValuePlayTwo',body,httpOptions).toPromise();
-  }*/
- /* askToRefreshPlayOne(object){
-    let body = JSON.stringify(object);
-    return this.http.post(this.endpoint+'askToRefreshPlayOne',body,httpOptions).toPromise();
-  }
-  askToRefreshPlayTwo(object){
-    let body = JSON.stringify(object);
-    return this.http.post(this.endpoint+'askToRefreshPlayTwo',body,httpOptions).toPromise();
-  }*/
+  
   getRefreshValue(object){
     let body = JSON.stringify(object);
     console.log(body)
     return this.http.post(this.endpoint+'getRefreshValue',body,httpOptions).toPromise();
   }
- /* getRefreshValuePlayTwo(object){
+
+  sendMessage(object)
+  {
     let body = JSON.stringify(object);
-    return this.http.post(this.endpoint+'getRefreshValuePlayTwo',body,httpOptions).toPromise();
-  }*/
+    console.log("body in sendMessage");
+    return this.http.post(this.endpoint+'setMessage',body,httpOptions).toPromise();
+  }
+
+  getMessage(object)
+  {
+    let body = JSON.stringify(object);
+    return this.http.post(this.endpoint+'getMessage',body,httpOptions);
+  }
 }
 

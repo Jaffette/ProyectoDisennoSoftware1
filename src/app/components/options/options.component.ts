@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ɵConsole } from '@angular/core';
 import { Options } from '../../interfaces/options.interface';
 import { ActivatedRoute } from '@angular/router';
 import { OptionsService } from '../../services/options.service';
@@ -10,7 +10,7 @@ import { PassObject } from '../../services/object.service';
   styleUrls: ['./options.component.css']
 })
 export class OptionsComponent implements OnInit {
-
+  value:string="";
   option:Options=
   {
     game:"",
@@ -36,6 +36,13 @@ export class OptionsComponent implements OnInit {
       this.option.playerOne = this.email;
       this.option.game = this.game;
       this.option.currentPlayer = this.email;
+      if(this.game == 'Othello/')
+      {
+        this.value='/gameScreen/';
+      }
+      else{
+        this.value ='/createSession/';
+      }
    }
 
    setObject()
@@ -45,6 +52,7 @@ export class OptionsComponent implements OnInit {
    }
  
   ngOnInit() {
+    console.log("To ",this.game, " game");
   }
 
 }
