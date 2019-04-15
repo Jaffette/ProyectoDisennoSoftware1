@@ -221,7 +221,7 @@ export class GameScreenComponent implements OnInit {
   }
    createSession(){
     //console.log("create Session",this.object); 
-    this._restService.createSession(this.object).subscribe(
+    this._restService.createOthelloSession(this.object).subscribe(
       data =>{ 
         //this.tablero=data['graphicBoardReal'];
         this.objectToPaint.graphicBoard =  data['graphicBoard'];
