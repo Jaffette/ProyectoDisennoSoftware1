@@ -14,14 +14,10 @@ export class GameScreenComponent implements OnInit {
   token;
   message;
   public loading : boolean;
-  //La matriz Grafica
-  //Contador para verificar 
   contador:number=0;
   //Posiciones para enviar al API
-  posX1:number;
-  posY1:number;
-  posX2:number;
-  posY2:number;
+  posX:number;
+  posY:number;
  //Objeto para trabajar
   public objectGame = {
   currentPlayer:"",
@@ -55,6 +51,9 @@ export class GameScreenComponent implements OnInit {
   refreshVarPlayTwo = true;
   playerOne = "";
   playerTwo = "";
+  id:number = 0;
+  idOp:number = 0;
+
   constructor(private _restService: RestService, private _object: PassObject, private _user:UserService ) {
 
     this.loading = false;
@@ -71,8 +70,9 @@ export class GameScreenComponent implements OnInit {
         this.objectToPaint.ptsPlayerTwo = 0;
         this.token = this._object.tokenParaJoin;
         this.ableDisableBoard = false;
-        console.log('valor del tablero en el constructor cuando soy del join',this.ableDisableBoard);
-        //this.paintFinal();
+        this.id = 2;
+        this.idOp = 1;
+        console.log('valor del tablero en el constructor cuando soy del join',this.tablero);
         this.playerTwo = "playerTwo";
         this.methodToCallRefreshFirst();
         this.loading = true;
@@ -90,6 +90,8 @@ export class GameScreenComponent implements OnInit {
       this.objectToPaint.ptsPlayerTwo = 0;
       this.createSession();
       this.playerOne = "playerOne";
+      this.id = 1;
+      this.idOp = 2;
     }
    
    }
@@ -148,33 +150,23 @@ export class GameScreenComponent implements OnInit {
     );
   }
   async refreshForPlayerOne(){
-    console.log("refresh player one");
-    console.log("refreshVarPlayTwo",this.refreshVarPlayOne);
     if(this.playerOne == "playerOne"){
       while(!this.refreshVarPlayOne){
         this.refreshVarPlayOne = await this.askRefresh();
         this.ableDisableBoard = false;
-        console.log('cuando estoy en el while del P1',this.ableDisableBoard);
-        console.log("refresh screen to player one",this.refreshVarPlayOne);
       }
       this.ableDisableBoard = true;
       this.readMessages();
-      console.log('cuando salgo en el while del P!',this.ableDisableBoard);
-      console.log("I will refresh the player two")
-      console.log("refreshVarPlayTwo",this.refreshVarPlayOne);
-      console.log("Salió del while");
-      this.loading = true;
+       this.loading = true;
       this.paintFinal()
     }
   }
+
   async refreshForPlayerTwo(){
     if(this.playerTwo == "playerTwo"){
-      console.log("Refresh var player two")
       while(this.refreshVarPlayTwo){
         this.refreshVarPlayTwo = await this.askRefresh();
         this.ableDisableBoard = false;
-        console.log('cuando estoy en el while del P2',this.ableDisableBoard);
-        console.log("refresh screen to player two",this.refreshVarPlayTwo);
       }
       this.readMessages();
       this.ableDisableBoard = true;
@@ -183,13 +175,7 @@ export class GameScreenComponent implements OnInit {
        this.paintFinal()
     }
   }
-  async changeVar1(){
-    this.refreshVarPlayOne = false;
-  }
-
-  async changeVar2(){
-    this.refreshVarPlayTwo = true;
-  }
+ 
   
   async paint(){
     while(this.validation == "failed"){
@@ -200,13 +186,9 @@ export class GameScreenComponent implements OnInit {
   }
 
    paintFinal(){
-    var jsonBody={token:this.token};
-    //console.log('Valor de mi token para pintar: ',this.token)
-    //console.log('Entré aquí')
-      this._restService.paintBoard(jsonBody).then(
+    var jsonBody={token:this.token, turnoId: this.id, turnoIdOp:this.idOp};
+      this._restService.getSessionOthello(jsonBody).then(
       data2 =>{ 
-      //console.log('Entré aquí 2')
-      //console.log('Info del Paint: ',data2);
       this.objectToPaint.graphicBoard = data2['graphicBoard'];
       this.tablero=this.objectToPaint.graphicBoard;
       this.objectToPaint.playerOne =  data2['playerOne'];
@@ -220,10 +202,11 @@ export class GameScreenComponent implements OnInit {
     })
   }
    createSession(){
-    //console.log("create Session",this.object); 
+   
     this._restService.createOthelloSession(this.object).subscribe(
       data =>{ 
-        //this.tablero=data['graphicBoardReal'];
+        console.log("Lo que se va a pintar",data['graphicBoard']);
+        this.tablero =  data['graphicBoard'];
         this.objectToPaint.graphicBoard =  data['graphicBoard'];
         this.objectToPaint.token = data['token'];
         this.token =  this.objectToPaint.token;
@@ -240,40 +223,28 @@ export class GameScreenComponent implements OnInit {
   //Function that stores in the api the cards selected by the Players
   async positions(fila,columna)
    {
-    //console.log("contador al inicio ",this.contador);
-     if(this.posX1 == null || this.posX2 == null || this.posY1==null || this.posY2==null)
-     {
-      
-       if(this.contador==0)
-       {
-          this.posX1=fila;
-          this.posY1=columna;
-          this.contador++;
-       }
-       else
-       {
-        this.posX2=fila;
-        this.posY2=columna;
+
+          this.posX=fila;
+          this.posY=columna;
+
          var objectMovements = 
          {
            token:this.objectToPaint.token,
-           posX1: this.posX1,
-           posY1: this.posY1,
-           posX2: this.posX2,
-           posY2: this.posY2,
-           //currentPlayer: this.objectToPaint.currentPlayer
-           
+           posX: this.posX,
+           posY: this.posY,
+           id: this.id,
+           idOp: this.idOp
          }
-         this._restService.play(objectMovements).subscribe
+         console.log("Obejeto Necesario ",objectMovements);
+         await this._restService.playOthello(objectMovements).then
          (
            data =>
            {
+             console.log("GRAPHIc PARA SARA",data['graphicBoard']);
              this.objectToPaint.token = data['token'];
-             this.objectToPaint.graphicBoard = data['graphicBoard'];//ESta es la que queda
-             this.objectToPaint.graphicBoard2=data['graphicBoard2'];
+             this.objectToPaint.graphicBoard = data['graphicBoard'];
              this.objectToPaint.ptsPlayerOne = data['ptsPlayerOne'];
              this.objectToPaint.ptsPlayerTwo= data['ptsPlayerTwo'];
-             this.objectToPaint.currentPlayer= data['currentPlayer'];
              this.tablero = this.objectToPaint.graphicBoard;
            },
            err =>
@@ -281,37 +252,25 @@ export class GameScreenComponent implements OnInit {
               console.log("Error while Playing");
            }
          );
-        //Se setean en 0;
-        this.posX1 = null;
-        this.posY1 = null;
-        this.posX2 = null;
-        this.posY2 = null;
-        this.contador = 0;
-        if(this.playerOne == "playerOne"){
-          await this.updateRefreshValue();
-          this.repaint();
-          this.refreshVarPlayOne = false;
-          await this.refreshForPlayerOne();
-
-        }
-        else if(this.playerTwo == "playerTwo"){
-          await this.updateRefreshValue();
-          this.repaint();
-          this.refreshVarPlayTwo = true;
-          await this.refreshForPlayerTwo();
-        }
+        //Se setean en null;
+        this.posX = null;
+        this.posY = null;
+        this.loading=true;
        
        }
-     }
-   }
+     
 
+//DEBE DE VER SI LOGRA REPINTAR ESTA MADRE!!! mjmmm
    async repaint()
    {
      console.log('Repintando');
-     this.tablero = this.objectToPaint.graphicBoard2;
+     this.tablero = this.objectToPaint.graphicBoard;
     console.log('Pintando la no definitiva', this.tablero);
     await setTimeout(()=>{ this.tablero = this.objectToPaint.graphicBoard; console.log('La definitiva',this.tablero)},5000);
    }
+   //**********************
+
+
 
    async sendMessage()
    {
@@ -350,7 +309,6 @@ export class GameScreenComponent implements OnInit {
         alert('Tu mensaje no puso ser enviado');
       }
       );
-    // }
  
    }
 

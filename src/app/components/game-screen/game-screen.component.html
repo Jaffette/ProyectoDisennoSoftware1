@@ -33,7 +33,7 @@
 
     <br>
     <div>
-        <img src="../../../assets/avatar.png" class="avatar2">
+        <img src="../../../assets/avatar.png" class="avatar">
         <br>
         <h2 class="h2">{{objectToPaint.playerTwo}}</h2>
         <h2 class="h2">Points: {{objectToPaint.ptsPlayerTwo}}</h2>
@@ -41,7 +41,7 @@
 
     <div class="chat">
         <label>CHAT</label>
-        <textarea readonly="readonly" name="chat" id="chatToShow" cols="80" rows="20">{{showMessages}}</textarea>
+        <textarea readonly="readonly" name="chat" id="chatToShow" cols="40" rows="10">{{showMessages}}</textarea>
         <hr>
         <input type="text" id="messageToSend" [(ngModel)]="message">
         <button class="btn btn-danger" (click)="sendMessage()">SEND</button>

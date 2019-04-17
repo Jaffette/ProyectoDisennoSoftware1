@@ -36,6 +36,13 @@ export class RestService {
     return this.http.post(this.endpointMemory+'playGame',body,httpOptions);
   }
 
+  playOthello(object)
+  {
+    let body = JSON.stringify(object);
+    console.log(body);
+    return this.http.post(this.endpointOthello+'playOthello',body,httpOptions).toPromise();
+  }
+
   confirmSecondPlayer(object)
   {
     let body = JSON.stringify(object);
@@ -46,6 +53,12 @@ export class RestService {
   {
     let body = JSON.stringify(object);
     return this.http.post(this.endpointMemory+'getMemorySessions',body,httpOptions);
+  }
+
+  getSessionOthello(object)
+  {
+    let body = JSON.stringify(object);
+    return this.http.post(this.endpointOthello+'getSessionOthello',body,httpOptions).toPromise();
   }
 
   joinSession(object)
@@ -87,6 +100,8 @@ export class RestService {
     let body = JSON.stringify(object);
     return this.http.post(this.endpointMemory+'getMessage',body,httpOptions);
   }
+
+  
 
 
 }
