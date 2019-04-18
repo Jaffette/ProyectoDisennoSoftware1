@@ -41,7 +41,7 @@ const APP_ROUTES: Routes = [
     component: SessionsComponent
   },
   {
-    path:'game-screen/:key',
+    path:'gameScreen/:level/:game',
     component:GameScreenComponent
   },
 

@@ -1,9 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ɵConsole } from '@angular/core';
 import { Options } from '../../interfaces/options.interface';
-import { ActivatedRoute } from '@angular/router'
+import { ActivatedRoute } from '@angular/router';
 import { OptionsService } from '../../services/options.service';
-import { objectPass } from '../../services/object.service';
-
+import { PassObject } from '../../services/object.service';
 
 @Component({
   selector: 'app-options',
@@ -11,7 +10,7 @@ import { objectPass } from '../../services/object.service';
   styleUrls: ['./options.component.css']
 })
 export class OptionsComponent implements OnInit {
-
+  value:string="";
   option:Options=
   {
     game:"",
@@ -19,18 +18,16 @@ export class OptionsComponent implements OnInit {
     level:"",
     playerOne:"",
     playerTwo:"",
-    turnPlayerOne:true,
-    turnPlayerTwo:false,
+    currentPlayer:"",
     ptsPlayerOne:0,
     ptsPlayerTwo:0,
     winner:'empty'
   };
   
-  
   game:string;
   email:string;
 
-  constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService, private _object:objectPass ) 
+  constructor( private activatedRoute: ActivatedRoute, private _optionService: OptionsService, private _object:PassObject) 
   {
     this.activatedRoute.params.subscribe(params => {
       this.game= params['game'];
@@ -38,10 +35,24 @@ export class OptionsComponent implements OnInit {
     });
       this.option.playerOne = this.email;
       this.option.game = this.game;
-      console.log(this.email);
+      this.option.currentPlayer = this.email;
+      if(this.game == 'Othello/')
+      {
+        this.value='/gameScreen/';
+      }
+      else{
+        this.value ='/createSession/';
+      }
    }
 
+   setObject()
+   {
+      this._object.setObject(this.option);
+      this._object.setVar1("create");
+   }
+ 
   ngOnInit() {
+    console.log("To ",this.game, " game");
   }
 
   sendObject()

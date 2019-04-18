@@ -22,9 +22,7 @@ export class OptionsService {
         newData = {
         identifier : object.playerOne.substr(1,object.playerOne.length-1),
         playerOne: object.playerOne.substr(1,object.playerOne.length-1),
-        turnPlayerOne: object.turnPlayerOne,
         playerTwo : 'empty',
-        turnPlayerTwo : object.turnPlayerTwo,
         gameType: object.game,
         modality: object.modality.substr(1,object.modality.length-2),
         level : object.level.substr(0,object.level.length-1)
@@ -56,7 +54,7 @@ export class OptionsService {
     var result = [];
     var ref = firebase.database().ref();
     return new Promise (function (resolve){
-        ref.child('games').orderByChild('playerTwo').equalTo("empty").on("value",function(snapshot){
+        ref.child('games').orderByChild('playerTwo').equalTo("").on("value",function(snapshot){
           console.log(snapshot.val());
           snapshot.forEach(function(data){
             console.log(data.key);

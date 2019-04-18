@@ -24,7 +24,7 @@ readDashBoard(level,game)
             console.log('result in ref',result);
             resolve(result);
         });
-        });
+    });
 
 }
 

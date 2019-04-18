@@ -8,7 +8,7 @@
         <div class="form-group">
             <label class="font-weight-bold">Modality: </label>
             <select class="form-control" [(ngModel)]="option.modality" name="modality" required> 
-                  <option value="/createSession/">Create Session</option>
+                  <option value="{{value}}" id="posibilitie">Create Session</option>
                   <option value="/joinSession/">Join Session</option>
                   <option value="/againstmachine/">Player vs Machine</option>
                 </select>
@@ -21,7 +21,7 @@
                 </select>
             <br>
             <div class="form-group">
-                <button type="submit" class="btn btn-dark btn-lg" (click)="sendObject()" routerLink="{{option.modality+option.level+option}}" routerLinkActive="active">
+                <button type="submit" class="btn btn-dark btn-lg" (click)="setObject();" routerLink="{{option.modality+option.level+option.game}}" routerLinkActive="active">
                     GO ->
                 </button>
             </div>

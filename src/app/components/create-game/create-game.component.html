@@ -1,25 +1,51 @@
-<div>
-    <img src="../../../assets/avatar.png" class="avatar">
-    <br>
-    <h2 class="h2">{{grafica.playerOne}}</h2>
-    <h2 class="h2">Points: {{grafica.ptsPlayerOne}}</h2>
+<div *ngIf="!loading">
+    <h1><img src="../../../assets/loader.gif" alt="" width=80px; height=80px;> Waiting for player</h1>
+    <button (click)="paint()">Make myself Visible</button>
 </div>
-<br>
-<div class="container">
-    <table class="table-responsive" cellpadding=1 cellspacing=1>
-
-        <tr class="row" *ngFor="let row of tablero; let i = index">
-            <td class="col" *ngFor="let col of row; let j = index">
-                <img (click)="positions(i,j);" class="image1" [src]="col">
-            </td>
-        </tr>
-
-    </table>
-</div>
-<br>
-<div>
-    <img src="../../../assets/avatar.png" class="avatar2">
+<div class="General" *ngIf="loading">
+    <div>
+        <img src="../../../assets/avatar.png" class="avatar">
+        <br>
+        <h2 class="h2">{{objectToPaint.playerOne}}</h2>
+        <h2 class="h2">Points: {{objectToPaint.ptsPlayerOne}}</h2>
+        <hr>
+    </div>
     <br>
-    <h2 class="h2">{{grafica.plyerTwo}}</h2>
-    <h2 class="h2">Points: {{grafica.ptsPlayerTwo}}</h2>
+
+
+    <div class="container" *ngIf="ableDisableBoard">
+        <table class="table-responsive" cellpadding=1 cellspacing=1>
+
+            <tr class="row" *ngFor="let row of tablero; let i = index">
+                <td class="col" *ngFor="let col of row; let j = index">
+                    <img (click)="positions(i,j);" class="image1" [src]="col">
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+    <div *ngIf="!ableDisableBoard">
+        <h1><img src="../../../assets/loader.gif" alt="" width=80px; height=80px;> Waiting for yout turn</h1>
+    </div>
+
+    <br>
+
+    <br>
+    <div>
+        <img src="../../../assets/avatar.png" class="avatar2">
+        <br>
+        <h2 class="h2">{{objectToPaint.playerTwo}}</h2>
+        <h2 class="h2">Points: {{objectToPaint.ptsPlayerTwo}}</h2>
+    </div>
+
+    <div class="chat">
+        <label>CHAT</label>
+        <textarea readonly="readonly" name="chat" id="chatToShow" cols="80" rows="20">{{showMessages}}</textarea>
+        <hr>
+        <input type="text" id="messageToSend" [(ngModel)]="message">
+        <button class="btn btn-danger" (click)="sendMessage()">SEND</button>
+    </div>
+
+
 </div>
