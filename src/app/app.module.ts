@@ -6,11 +6,11 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
 
-//Routes
+// Routes
 
 import { APP_ROUTING } from './app.routes';
 
-//Components
+// Components
 import { AppComponent } from './app.component';
 import { DecisionComponent } from './components/decision/decision.component';
 import { CreateGameComponent } from './components/create-game/create-game.component';
@@ -20,7 +20,7 @@ import { LogInComponent } from './components/log-in/log-in.component';
 import { StatisticsComponent } from './components/statistics/statistics.component';
 import { SessionsComponent } from './components/sessions/sessions.component';
 import { GameScreenComponent } from './components/game-screen/game-screen.component';
-//Services
+// Services
 import { OptionsService } from './services/options.service';
 import { MemoryService } from './services/memory.service';
 import { PassObject } from './services/object.service';

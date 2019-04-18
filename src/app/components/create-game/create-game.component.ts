@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-<<<<<<< HEAD
-import { Options } from '../../interfaces/options.interface';
-import { objectPass } from '../../services/object.service';
-=======
 import { RestService } from '../../services/rest.service';
 import { PassObject } from '../../services/object.service';
 import { Options } from '../../interfaces/options.interface';
 import { container } from '@angular/core/src/render3';
 import {UserService } from '../../services/user.service';
->>>>>>> apiService
 
 @Component({
   selector: 'app-create-game',
@@ -54,62 +49,6 @@ export class CreateGameComponent implements OnInit {
    object:Options;
   //recibe el tablero que proviene del API;
   public tablero;
-<<<<<<< HEAD
-  //Objeto para enviar al API
-  object:Options;
-  public grafica = 
-  {
-    gameType:"memory",
-    graphicBoard1 : 
-      [
-      ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/216500/1427518228.svg",
-       "https://openclipart.org/download/291098/fishtank-colour.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"],
-      ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"],
-      ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"],
-       ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"]
-      ],
-      graphicBoard2 : 
-      [
-      ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"],
-      ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"],
-      ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"],
-       ["https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg",
-       "https://openclipart.org/download/280803/slightly-styled-question-mark.svg"]
-      ],
-      playerOne:"uri.arte08@gmail.com",
-      plyerTwo:"jaffette.solano@gmail.com",
-      ptsPlayerOne:0,
-      ptsPlayerTwo:0
-    };
-  
-
-  constructor( private _object:objectPass) {
-    this.loading = true;
-    this.object=_object.getObject();
-   }
-=======
   ableDisableBoard:boolean;
   //Variable que guarda cuando los 2 jugadores ya estan 
   validation = "failed";
@@ -118,7 +57,6 @@ export class CreateGameComponent implements OnInit {
   playerOne = "";
   playerTwo = "";
   constructor(private _restService: RestService, private _object: PassObject, private _user:UserService ) {
->>>>>>> apiService
 
     this.loading = false;
     this.object = _object.getObject();
@@ -155,16 +93,10 @@ export class CreateGameComponent implements OnInit {
    
    }
   ngOnInit() {
-<<<<<<< HEAD
-    this.paint();
-    
-    console.log(this.object.game,this.object.level,this.object.modality,this.object.playerOne,this.object.playerTwo);
-=======
   }
   async methodToCallRefreshFirst(){
     await this.paintFinal();
     await this.refreshForPlayerTwo();
->>>>>>> apiService
   }
 
   async cambioEstado(){
@@ -410,7 +342,5 @@ export class CreateGameComponent implements OnInit {
       }
       );
     // }
- 
    }
-
 }
