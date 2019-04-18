@@ -181,13 +181,6 @@ export class CreateGameComponent implements OnInit {
        this.paintFinal()
     }
   }
-  async changeVar1(){
-    this.refreshVarPlayOne = false;
-  }
-
-  async changeVar2(){
-    this.refreshVarPlayTwo = true;
-  }
   
   async paint(){
     while(this.validation == "failed"){

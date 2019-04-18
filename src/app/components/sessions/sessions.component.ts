@@ -63,20 +63,32 @@ export class SessionsComponent implements OnInit {
 
   joinSessions(i)
   {
-    console.log('LA RUTA ES: ',this.options.route,this.options.level,this.options.game);
     this._optionObject.setToken(this.sessions[i]['token']);
     console.log('Token del joinSession',this.sessions[i]['token'] )
     var json = {token:this.sessions[i]['token'], email:this.user.showMail()};
+
+    if( this.options.game == 'Memory'){
     this._restService.joinSession(json).subscribe(
       data =>
       {
-       console.log('data del Servicio en join session',data)
+       console.log('data del Servicio en join session si soy de memoria',data)
       },
       err => 
       {
         console.log("Error occured.")
         return null
       }
-    );
-  }
+    );}
+
+    else{
+      this._restService.joinOthelloSession(json).subscribe(
+        data => {
+          console.log('data del Servicio en join session si soy de othello',data)
+        }, err =>
+        {
+          console.log("Error occured.")
+        return null
+        });
+      }
+    }
 }
