@@ -12,7 +12,8 @@ export class RestService {
 
   constructor(private http: HttpClient) { }
   endpointMemory = 'https://api-rest-games.herokuapp.com/api/memory/';
-  endpointOthello = 'https://api-rest-games.herokuapp.com/api/othello/';
+  //endpointOthello = 'https://api-rest-games.herokuapp.com/api/othello/';
+  endpointOthello = 'http://localhost:3000/api/othello/';
   private extractData(res: Response) {
     let body = res;
     return body || { };
