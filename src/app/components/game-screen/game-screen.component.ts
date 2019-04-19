@@ -112,7 +112,6 @@ export class GameScreenComponent implements OnInit {
       },
       err => 
       {
-        
         return null
       }
     );
@@ -120,7 +119,7 @@ export class GameScreenComponent implements OnInit {
   }
 
   async askRefresh(){
-    var askJson = {token:this.objectToPaint.token}
+    var askJson = {token:this.token}
     const askPromise = await this._restService.getRefreshValue(askJson).then(
       data =>
       {
@@ -134,6 +133,24 @@ export class GameScreenComponent implements OnInit {
       }
     );
     return askPromise;
+  }
+
+  async consultWinner(){
+    console.log("Entró a consultWinner");
+    var askJson = {token:this.token}
+    const askWinner = await this._restService.consultOthelloWinner(askJson).then(
+      data =>
+      {
+        console.log("Lo que llega de la consulta de winner",data);
+        return data['winner'];
+        
+      },
+      err => 
+      {
+        console.log("Error occured.")
+      }
+    );
+    return askWinner;
   }
 
   async updateRefreshValue(){
@@ -150,33 +167,56 @@ export class GameScreenComponent implements OnInit {
     );
   }
   async refreshForPlayerOne(){
+    var askForWinner;
+    askForWinner = await this.consultWinner();
     if(this.playerOne == "playerOne"){
       while(!this.refreshVarPlayOne){
         this.refreshVarPlayOne = await this.askRefresh();
         this.ableDisableBoard = false;
+        if(askForWinner != "Any"){
+          this.paintFinal()
+          alert(askForWinner)
+          break;
+        }
       }
-      this.ableDisableBoard = true;
-      this.readMessages();
-       this.loading = true;
-      this.paintFinal()
+      
+        this.ableDisableBoard = true;
+        this.readMessages();
+        this.loading = true;
+        this.paintFinal()
+        if(askForWinner != "Any"){
+          this.paintFinal()
+          alert(askForWinner)
+        }
+      
     }
   }
 
   async refreshForPlayerTwo(){
+    var askForWinner;
+    askForWinner = await this.consultWinner();
     if(this.playerTwo == "playerTwo"){
       while(this.refreshVarPlayTwo){
         this.refreshVarPlayTwo = await this.askRefresh();
         this.ableDisableBoard = false;
+        if(askForWinner != "Any"){
+          this.paintFinal()
+          alert(askForWinner)
+          break;
+        }
       }
       this.readMessages();
       this.ableDisableBoard = true;
       console.log('cuando salgo en el while del P2',this.ableDisableBoard);
       this.loading = true;
-       this.paintFinal()
+      this.paintFinal()
+      
+        if(askForWinner != "Any"){
+          this.paintFinal()
+          alert(askForWinner)
+        }
     }
   }
- 
-  
   async paint(){
     while(this.validation == "failed"){
       this.validation = await this.cambioEstado();
@@ -187,6 +227,7 @@ export class GameScreenComponent implements OnInit {
 
    paintFinal(){
     var jsonBody={token:this.token, turnoId: this.id, turnoIdOp:this.idOp};
+    console.log("El objeto del paint final ",jsonBody);
       this._restService.getSessionOthello(jsonBody).then(
       data2 =>{ 
       this.objectToPaint.graphicBoard = data2['graphicBoard'];
@@ -202,7 +243,7 @@ export class GameScreenComponent implements OnInit {
     })
   }
    createSession(){
-   
+    console.log("El objeto para crear la sesión ",this.object)
     this._restService.createOthelloSession(this.object).subscribe(
       data =>{ 
         console.log("Lo que se va a pintar",data['graphicBoard']);
@@ -253,8 +294,22 @@ export class GameScreenComponent implements OnInit {
         //Se setean en null;
         this.posX = null;
         this.posY = null;
-        this.loading=true;
-       
+        //this.loading=true;
+        if(this.playerOne == "playerOne"){
+          console.log("Entró al if the playerOne")
+          await this.updateRefreshValue();
+          //this.repaint();
+          this.refreshVarPlayOne = false;
+          await this.refreshForPlayerOne();
+
+        }
+        else if(this.playerTwo == "playerTwo"){
+          console.log("Entró al if the playerTwo")
+          await this.updateRefreshValue();
+          //this.repaint();
+          this.refreshVarPlayTwo = true;
+          await this.refreshForPlayerTwo();
+        }
        }
      
 

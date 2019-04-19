@@ -11,8 +11,7 @@ const httpOptions = {
 export class RestService {
 
   constructor(private http: HttpClient) { }
- // endpointMemory = 'http://localhost:3000/api/memory/';
-  endpointMemory = 'https://api-rest-games.herokuapp.com/api/memory/'
+  endpointMemory = 'https://api-rest-games.herokuapp.com/api/memory/';
   endpointOthello = 'https://api-rest-games.herokuapp.com/api/othello/';
   private extractData(res: Response) {
     let body = res;
@@ -102,6 +101,10 @@ export class RestService {
     return this.http.post(this.endpointMemory+'getMessage',body,httpOptions);
   }
 
+  consultOthelloWinner(object){
+    let body = JSON.stringify(object);
+    return this.http.post(this.endpointOthello+'consultWinner',body,httpOptions).toPromise();
+  }
   
 
 
