@@ -324,8 +324,23 @@ export class GameScreenComponent implements OnInit {
    //**********************
 
 
-
    async sendMessage()
+      {
+        var player:string;
+        this.message
+        console.log(this.message);
+        
+       if(this._object.var1== "GG")
+       {
+         player= "playerTwo";
+       }
+       else{
+         player= "playerOne";
+       }
+       var dataToSend = {token:this.objectToPaint.token, msg:this.message, player:player }
+       await this._restService.sendMessage(dataToSend);
+      }
+   /*async sendMessage()
    {
      var player:string;
      this.message
@@ -341,9 +356,9 @@ export class GameScreenComponent implements OnInit {
     var dataToSend = {token:this.objectToPaint.token, msg:this.message, player:player }
     await this._restService.sendMessage(dataToSend);
     document.getElementById('messageToSend').replaceWith(' ');
-   }
+   }*/
 
-   async readMessages()
+   /*async readMessages()
    {
      var dataToSend = {token:this.objectToPaint.token};
     // while(true){
@@ -362,6 +377,42 @@ export class GameScreenComponent implements OnInit {
         alert('Tu mensaje no puso ser enviado');
       }
       );
+ 
+   }*/
+
+async readMessages()
+   {
+     this.showMessages = "";
+     var dataToSend = {token:this.objectToPaint.token};
+    // while(true){
+
+      await this._restService.getMessage(dataToSend).subscribe(
+        dataToShow =>{ 
+
+        for(let i in dataToShow)
+        {
+          console.log("This is the i",i);
+          for(let j in dataToShow[i]){
+            console.log("j",j)
+            console.log("i",dataToShow[i])
+             this.showMessages += '\n'+j +": "+ dataToShow[i][j];
+          }
+        } 
+
+        /* if(typeof this.showMessages != 'undefined'){
+           if(typeof dataToShow['message1'] != "undefined")
+            this.showMessages+='\n PlayerOne: '+dataToShow['message1'];
+            if(typeof dataToShow['message2'] != "undefined")
+            this.showMessages+='\n PlayerTwo: '+dataToShow['message2'];
+          }*/
+          
+      },
+      err =>
+      {
+        alert('Tu mensaje no puso ser enviado');
+      }
+      );
+    // }
  
    }
 
