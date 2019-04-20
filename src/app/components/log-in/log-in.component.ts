@@ -18,8 +18,6 @@ export class LogInComponent implements OnInit {
     
   }
 
-  get(){
-  }
 
 }
 
