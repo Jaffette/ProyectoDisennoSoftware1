@@ -19,3 +19,8 @@
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: whitesmoke;
 }
+#mybutton {
+    position: fixed;
+    bottom: 1%;
+    left: 2%;
+}
