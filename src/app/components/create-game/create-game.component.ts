@@ -321,27 +321,28 @@ export class CreateGameComponent implements OnInit {
     await this._restService.sendMessage(dataToSend);
    }
 
-   async readMessages()
+
+async readMessages()
+{
+  this.showMessages = "";
+  var dataToSend = {token:this.objectToPaint.token};
+
+   await this._restService.getMessage(dataToSend).subscribe(
+     dataToShow =>{ 
+
+     for(let i in dataToShow)
+     {
+       for(let j in dataToShow[i]){
+          this.showMessages += '\n'+j +": "+ dataToShow[i][j];
+       }
+     }           
+   },
+   err =>
    {
-     var dataToSend = {token:this.objectToPaint.token};
-    // while(true){
-      await this._restService.getMessage(dataToSend).subscribe(
-        dataToShow =>{ 
-         if(typeof this.showMessages != 'undefined'){
-           if(typeof dataToShow['message1'] != "undefined")
-            this.showMessages+='\n PlayerOne: '+dataToShow['message1'];
-            if(typeof dataToShow['message2'] != "undefined")
-            this.showMessages+='\n PlayerTwo: '+dataToShow['message2'];
-          }
-          
-      },
-      err =>
-      {
-        alert('Tu mensaje no puso ser enviado');
-      }
-      );
-    // }
- 
+     alert('Tu mensaje no puso ser enviado');
    }
+   );
+
+}
 
 }
