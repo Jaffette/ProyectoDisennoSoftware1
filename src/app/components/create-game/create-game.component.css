@@ -3,6 +3,10 @@
     height: 70px;
 }
 
+.h2 {
+    color: white;
+}
+
 .avatar {
     width: 70px;
     height: 70px;
@@ -19,8 +23,23 @@
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: whitesmoke;
 }
+
 #mybutton {
     position: fixed;
     bottom: 1%;
     left: 2%;
+}
+
+.col {
+    padding: 0%;
+}
+
+.container {
+    padding: 0%;
+}
+
+@media(max-width:500px) {
+    #board {
+        margin-left: 5%
+    }
 }

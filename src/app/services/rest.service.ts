@@ -108,7 +108,12 @@ export class RestService {
     return this.http.post(this.endpointOthello+'consultWinner',body,httpOptions).toPromise();
   }
   
-
+  displayStatistics(object){
+    console.log("AL API");
+    let body = JSON.stringify(object);
+    console.log(body)
+    return this.http.post(this.endpointOthello+'consultStatistics',body,httpOptions).toPromise();
+  }
 
 }
 

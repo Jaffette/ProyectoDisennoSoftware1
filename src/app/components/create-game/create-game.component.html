@@ -1,6 +1,6 @@
 <div *ngIf="!loading">
-    <h1><img src="../../../assets/loader.gif" alt="" width=80px; height=80px;> Waiting for player</h1>
-    <button (click)="paint()">Make myself Visible</button>
+    <h1><img src="../../../assets/loader.gif" alt="" width=70px; height=70px;> Waiting for a player</h1>
+    <button class="btn btn-primary" (click)="paint()">Make myself Visible</button>
 </div>
 <div class="General" *ngIf="loading">
     <div>
@@ -14,7 +14,7 @@
 
 
     <div class="container" *ngIf="ableDisableBoard">
-        <table class="table-responsive" cellpadding=1 cellspacing=1>
+        <div id="board" class="container" cellpadding=1 cellspacing=1>
 
             <tr class="row" *ngFor="let row of tablero; let i = index">
                 <td class="col" *ngFor="let col of row; let j = index">
@@ -22,7 +22,7 @@
                 </td>
             </tr>
 
-        </table>
+        </div>
 
     </div>
     <div *ngIf="!ableDisableBoard">
