@@ -61,7 +61,7 @@ export class CreateGameComponent implements OnInit {
     this.loading = false;
     this.object = _object.getObject();
     this.user = _user
-    if(this._object.var1== "GG")
+    if(this._object.var1 == "GG")
     {
         //console.log("Vengo de un join")
         this.objectToPaint.graphicBoard = [];
@@ -95,6 +95,7 @@ export class CreateGameComponent implements OnInit {
   ngOnInit() {
   }
   async methodToCallRefreshFirst(){
+    await this.paintInitially();
     await this.paintFinal();
     await this.refreshForPlayerTwo();
   }
@@ -187,13 +188,27 @@ export class CreateGameComponent implements OnInit {
       this.validation = await this.cambioEstado();
     }
     this.loading = true;   
-    this.paintFinal(); 
+     await this.paintInitially()
+     await this.paintFinal(); 
+  }
+
+  async paintInitially(){
+    this.tablero=[];
+    var jsonBody={token:this.token};
+    this._restService.paintBoard(jsonBody).then(
+    data2 =>{ 
+    this.objectToPaint.graphicBoard2 = data2['graphicBoardReal'];
+  },
+  err => {
+    console.log("Error occured.");
+  });
+
+  this.tablero = this.objectToPaint.graphicBoard2;
+  await setTimeout(()=>{console.log('');},5000);
   }
 
    paintFinal(){
     var jsonBody={token:this.token};
-    //console.log('Valor de mi token para pintar: ',this.token)
-    //console.log('Entré aquí')
       this._restService.paintBoard(jsonBody).then(
       data2 =>{ 
       //console.log('Entré aquí 2')
@@ -210,6 +225,7 @@ export class CreateGameComponent implements OnInit {
       console.log("Error occured.");
     })
   }
+
    createSession(){
     //console.log("create Session",this.object); 
     this._restService.createSession(this.object).subscribe(
@@ -301,15 +317,13 @@ export class CreateGameComponent implements OnInit {
      console.log('Repintando');
      this.tablero = this.objectToPaint.graphicBoard2;
     console.log('Pintando la no definitiva', this.tablero);
-    await setTimeout(()=>{ this.tablero = this.objectToPaint.graphicBoard; console.log('La definitiva',this.tablero)},5000);
+    await setTimeout(()=>{ this.tablero = this.objectToPaint.graphicBoard;},5000);
    }
 
    async sendMessage()
    {
      var player:string;
      this.message
-     console.log(this.message);
-     
     if(this._object.var1== "GG")
     {
       player= "playerTwo";
@@ -318,6 +332,7 @@ export class CreateGameComponent implements OnInit {
       player= "playerOne";
     }
     var dataToSend = {token:this.objectToPaint.token, msg:this.message, player:player }
+    this.showMessages+= '\n'+player+': '+this.message;
     await this._restService.sendMessage(dataToSend);
    }
 
