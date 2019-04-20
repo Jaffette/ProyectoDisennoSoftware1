@@ -260,9 +260,10 @@ export class GameScreenComponent implements OnInit {
   };
 
   //Function that stores in the api the cards selected by the Players
-  async positions(fila,columna)
-   {
-
+  async positions(fila,columna,src)
+   {  
+     console.log(src);
+        if(src == 'https://i.ibb.co/Q9qfsp3/posibilidad.png'){
           this.posX=fila;
           this.posY=columna;
 
@@ -310,7 +311,10 @@ export class GameScreenComponent implements OnInit {
           this.refreshVarPlayTwo = true;
           await this.refreshForPlayerTwo();
         }
-       }
+      }else{
+      alert("Invalid Movement");
+    }
+  }
      
 
 //DEBE DE VER SI LOGRA REPINTAR ESTA MADRE!!! mjmmm

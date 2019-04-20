@@ -18,7 +18,7 @@
 
             <tr class="row" *ngFor="let row of tablero; let i = index">
                 <td class="col" *ngFor="let col of row; let j = index">
-                    <img (click)="positions(i,j);" class="image1" [src]="col">
+                    <img (click)="positions(i,j,col);" class="image1" [src]="col">
                 </td>
             </tr>
 
