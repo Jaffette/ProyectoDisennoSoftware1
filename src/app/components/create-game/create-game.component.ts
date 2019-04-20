@@ -319,7 +319,6 @@ export class CreateGameComponent implements OnInit {
     }
     var dataToSend = {token:this.objectToPaint.token, msg:this.message, player:player }
     await this._restService.sendMessage(dataToSend);
-    document.getElementById('messageToSend').replaceWith(' ');
    }
 
    async readMessages()
