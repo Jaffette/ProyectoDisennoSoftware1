@@ -175,7 +175,7 @@ export class GameScreenComponent implements OnInit {
         this.ableDisableBoard = false;
         if(askForWinner != "Any"){
           this.paintFinal()
-          alert(askForWinner)
+          alert(askForWinner+" has won")
           break;
         }
       }
@@ -201,7 +201,7 @@ export class GameScreenComponent implements OnInit {
         this.ableDisableBoard = false;
         if(askForWinner != "Any"){
           this.paintFinal()
-          alert(askForWinner)
+          alert(askForWinner+" has won")
           break;
         }
       }

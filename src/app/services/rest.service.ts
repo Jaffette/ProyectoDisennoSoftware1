@@ -107,6 +107,11 @@ export class RestService {
     let body = JSON.stringify(object);
     return this.http.post(this.endpointOthello+'consultWinner',body,httpOptions).toPromise();
   }
+
+  consultMemoryWinner(object){
+    let body = JSON.stringify(object);
+    return this.http.post(this.endpointMemory+'consultWinner',body,httpOptions).toPromise();
+  }
   
   displayStatistics(object){
     console.log("AL API");
@@ -114,6 +119,7 @@ export class RestService {
     console.log(body)
     return this.http.post(this.endpointOthello+'consultStatistics',body,httpOptions).toPromise();
   }
+
 
 }
 
