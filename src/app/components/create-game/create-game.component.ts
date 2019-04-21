@@ -11,6 +11,7 @@ import {UserService } from '../../services/user.service';
   styleUrls: ['./create-game.component.css']
 })
 export class CreateGameComponent implements OnInit {
+  habilitado = false;
   showMessages:string ="";
   token;
   message;
@@ -98,7 +99,7 @@ export class CreateGameComponent implements OnInit {
     this.paintFinal();
     await this.refreshForPlayerTwo();
     await this.paintInitially();
-    await setTimeout(()=>{this.paintFinal();},5000);
+    await setTimeout(()=>{this.paintFinal();this.habilitado=true;},5000);
     
   }
 
@@ -201,7 +202,7 @@ export class CreateGameComponent implements OnInit {
     }
      await setTimeout(()=>{console.log('');},3000);
      await this.paintInitially();
-     await setTimeout(()=>{this.paintFinal();},5000);
+     await setTimeout(()=>{this.paintFinal();this.habilitado=true;},5000);
   }
 
   async paintInitially(){
@@ -258,6 +259,7 @@ export class CreateGameComponent implements OnInit {
   //Function that stores in the api the cards selected by the Players
   async positions(fila,columna)
    {
+     if(this.habilitado){
      if(this.posX1 == null || this.posX2 == null || this.posY1==null || this.posY2==null)
      {
       
@@ -321,6 +323,7 @@ export class CreateGameComponent implements OnInit {
        }
      }
    }
+  }
 
    async repaint()
    {
