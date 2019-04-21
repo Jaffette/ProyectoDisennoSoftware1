@@ -95,9 +95,11 @@ export class CreateGameComponent implements OnInit {
   ngOnInit() {
   }
   async methodToCallRefreshFirst(){
-    await this.paintInitially();
-    await this.paintFinal();
+    this.paintFinal();
     await this.refreshForPlayerTwo();
+    await this.paintInitially();
+    await setTimeout(()=>{this.paintFinal();},5000);
+    
   }
 
   async cambioEstado(){
@@ -187,9 +189,9 @@ export class CreateGameComponent implements OnInit {
     while(this.validation == "failed"){
       this.validation = await this.cambioEstado();
     }
-    this.loading = true;   
-     await this.paintInitially()
-     await this.paintFinal(); 
+     await setTimeout(()=>{console.log('');},3000);
+     await this.paintInitially();
+     await setTimeout(()=>{this.paintFinal();},5000);
   }
 
   async paintInitially(){
@@ -197,17 +199,22 @@ export class CreateGameComponent implements OnInit {
     var jsonBody={token:this.token};
     this._restService.paintBoard(jsonBody).then(
     data2 =>{ 
-    this.objectToPaint.graphicBoard2 = data2['graphicBoardReal'];
+    this.tablero = data2['graphicBoardReal'];
   },
   err => {
     console.log("Error occured.");
-  });
-
-  this.tablero = this.objectToPaint.graphicBoard2;
-  await setTimeout(()=>{console.log('');},5000);
+  }).then( ()=>{
+    this.loading = true; 
+    //this.tablero = this.objectToPaint.graphicBoard2;
+  console.log("Tablero después de el object to paint 2",this.tablero)
+  //await setTimeout(()=>{console.log('');},5000);
+  //alert("Try");
+     })
   }
 
    paintFinal(){
+    this.objectToPaint.graphicBoard = [];
+    this.tablero=[];
     var jsonBody={token:this.token};
       this._restService.paintBoard(jsonBody).then(
       data2 =>{ 
@@ -220,6 +227,8 @@ export class CreateGameComponent implements OnInit {
       this.objectToPaint.token = data2['token'];
       this.objectToPaint.ptsPlayerOne = data2['ptsPlayerOne'];
       this.objectToPaint.ptsPlayerTwo = data2['ptsPlayerTwo'];
+      this.loading = true;
+      console.log("Tablero en el paintFinal",this.tablero)
     },
     err => {
       console.log("Error occured.");
@@ -231,7 +240,7 @@ export class CreateGameComponent implements OnInit {
     this._restService.createSession(this.object).subscribe(
       data =>{ 
         //this.tablero=data['graphicBoardReal'];
-        this.objectToPaint.graphicBoard =  data['graphicBoard'];
+        //this.objectToPaint.graphicBoard =  data['graphicBoard'];
         this.objectToPaint.token = data['token'];
         this.token =  this.objectToPaint.token;
         this.objectToPaint.ptsPlayerOne = data['ptsPlayerOne'];
