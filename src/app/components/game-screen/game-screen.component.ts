@@ -340,6 +340,7 @@ export class GameScreenComponent implements OnInit {
          player= "playerOne";
        }
        var dataToSend = {token:this.objectToPaint.token, msg:this.message, player:player }
+       this.showMessages+= '\n'+player+': '+this.message;
        await this._restService.sendMessage(dataToSend);
       }
 
