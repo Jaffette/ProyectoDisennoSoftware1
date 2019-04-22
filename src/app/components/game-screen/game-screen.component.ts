@@ -260,7 +260,7 @@ export class GameScreenComponent implements OnInit {
   };
 
   //Function that stores in the api the cards selected by the Players
-  async positions(fila,columna,src)
+  async positions(fila,columna)
    { 
           this.posX=fila;
           this.posY=columna;
