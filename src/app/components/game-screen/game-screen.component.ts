@@ -262,7 +262,6 @@ export class GameScreenComponent implements OnInit {
   //Function that stores in the api the cards selected by the Players
   async positions(fila,columna,src)
    { 
-        if(src == 'https://i.ibb.co/Q9qfsp3/posibilidad.png'){
           this.posX=fila;
           this.posY=columna;
 
@@ -310,39 +309,7 @@ export class GameScreenComponent implements OnInit {
           this.refreshVarPlayTwo = true;
           await this.refreshForPlayerTwo();
         }
-      }else{
-        var total=0;
-        for(let i = 0; i<this.tablero; i++){
-          for(let j=0; j<i; j++){
-            if(this.tablero[i][j] == 'https://i.ibb.co/Q9qfsp3/posibilidad.png'){
-              console.log('entro al if');
-              total+=1;
-              console.log(total);
-            }
-          }
-        }
-      console.log('total',total);
-      if(total == 0){
-        if(this.playerOne == "playerOne"){
-          console.log("Entró al if the playerOne")
-          await this.updateRefreshValue();
-          //this.repaint();
-          this.refreshVarPlayOne = false;
-          await this.refreshForPlayerOne();
-
-        }
-        else if(this.playerTwo == "playerTwo"){
-          console.log("Entró al if the playerTwo")
-          await this.updateRefreshValue();
-          //this.repaint();
-          this.refreshVarPlayTwo = true;
-          await this.refreshForPlayerTwo();
-        }
-      }else{
-        alert("Invalid Movement");
-      }
-     
-    }
+   
   }
      
    async repaint()
